@@ -1,0 +1,48 @@
+/* .header {
+    display: flex; 
+    flex-direction: row;
+    margin-top: 2%;
+    justify-content: center;
+} */
+
+.site-title {
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 2%;
+}
+
+.sign-in-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2%;
+    margin-top: 1%
+}
+
+.signin {
+    display: flex;
+    flex-direction: column;
+    margin-top: -5%
+}
+
+.navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 2%;
+    margin-right: 2%;
+}
+
+.navigation-item {
+    margin-left: 2%;
+}
+
+.search-bar-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1%;
+}
+
+.search-bar {
+    width: 90%;
+}

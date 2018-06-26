@@ -59,210 +59,235 @@ app.get("/", function (req, res) {
 //return an object with a list of all the assassins 
 app.get('/assassins', (request, response) => {
     knex('assassins').select()
-      .then((assassins) => {
-        response.status(200).json(assassins);
+      .then((clients) => {
+        response.status(200).json(clients);
       })
       .catch((error) => {
         response.status(500).json({ error });
       });
   });
 
-  app.get('/clients', (request, response) => {
-    knex('assassins').select()
-      .then((assassins) => {
-        response.status(200).json(assassins);
-      })
-      .catch((error) => {
-        response.status(500).json({ error });
-      });
-  });
-
-
-
-
-
-// app.get('/assassins', function(req, res) {
-//     fs.readFile(usersPath, 'utf8', function(err, userData) {
-//         if (err) {
-//           console.error(err.stack);
-//           //need to check to see what .stack is
-//           return res.sendStatus(500);
-//         }
-//         let users = JSON.parse(userData);
-//         res.send(users);
-//         });
-//     });
 
 //return an object with a list of all the clients 
-app.get('/clients', function(req, res) {
-    fs.readFile(usersPath, 'utf8', function(err, userData) {
-        if (err) {
-          console.error(err.stack);
-          //need to check to see what .stack is
-          return res.sendStatus(500);
-        }
-        let users = JSON.parse(userData);
-        res.send(users);
-        });
-    });
+  app.get('/clients', (request, response) => {
+    knex('clients').select()
+      .then((clients) => {
+        response.status(200).json(clients);
+      })
+      .catch((error) => {
+        response.status(500).json({ error });
+      });
+  });
 
 
 //return an object with a list of all the targets 
-app.get('/targets', function(req, res) {
-    fs.readFile(usersPath, 'utf8', function(err, userData) {
-        if (err) {
-          console.error(err.stack);
-          //need to check to see what .stack is
-          return res.sendStatus(500);
-        }
-        let users = JSON.parse(userData);
-        res.send(users);
-        });
-    });
+  app.get('/targets', (request, response) => {
+    knex('targets').select()
+      .then((targets) => {
+        response.status(200).json(targets);
+      })
+      .catch((error) => {
+        response.status(500).json({ error });
+      });
+  });
 
-//return an object with a list of all the targets 
-app.get('/contracts', function(req, res) {
-    fs.readFile(usersPath, 'utf8', function(err, userData) {
-        if (err) {
-          console.error(err.stack);
-          //need to check to see what .stack is
-          return res.sendStatus(500);
-        }
-        let users = JSON.parse(userData);
-        res.send(users);
-        });
-    });
+//return an object with a list of all the contracts
+  app.get('/contracts', (request, response) => {
+    knex('contracts').select()
+      .then((contracts) => {
+        response.status(200).json(contracts);
+      })
+      .catch((error) => {
+        response.status(500).json({ error });
+      });
+  });
 
-//retrun favorites lists specific to a user id. such as whenever the user is looking at buinessses 
+//return favorites lists specific to a assassin_id
 app.get('/assassins/:id', function(req, res) {
-    fs.readFile(usersPath, 'utf8', function(err, userData){
-        if (err) {
-        console.error(err.stack);
-        return res.sendStatus(500);
-        }
-
-        let id = Number.parseInt(req.params.id);
-        let users = JSON.parse(userData);
-
-        if (id < 0 || id >= Object.keys(users).length || Number.isNaN(id)) {
-            res.sendStatus(404);
-            res.send('invalid user ID');
-            
-        }
-        else {
-            res.set('Content-Type', 'application/json');
-            res.send(users[id]);
-        }
-    });
+    let id = Number.parseInt(req.params.id);
+    knex('assassins').select().where( {
+        assassin_id: id
+    })
+      .then((assassin) => {
+        res.status(200).json(assassin);
+      })
+      .catch((error) => {
+        res.status(500).json({ error });
+      });
 });
 
-//return following lists specific to a user id. such as whenever the user is looking at buinessses 
+//return favorites lists specific to a client_id
 app.get('/clients/:id', function(req, res) {
-    fs.readFile(favoritesPath, 'utf8', function(err, petsData){
-        if (err) {
-        console.error(err.stack);
-        return res.sendStatus(500);
-        }
-    
-        let id = Number.parseInt(req.params.id);
-        let pets = JSON.parse(petsData);
-    
-        if (id < 0 || id >= pets.length || Number.isNaN(id)) {
-            return res.sendStatus(404);
-        }
-        res.set('Content-Type', 'application/json');
-        //returns array with jason file of all business the user is following 
-        res.send(following[id]);
-    });
+    let id = Number.parseInt(req.params.id);
+    knex('clients').select().where( {
+        client_id: id
+    })
+      .then((client) => {
+        res.status(200).json(client);
+      })
+      .catch((error) => {
+        res.status(500).json({ error });
+      });
 });
 
-//return following lists specific to a user id. such as whenever the user is looking at buinessses 
-app.get('/targets/:id', function(req, res) {
-    fs.readFile(favoritesPath, 'utf8', function(err, petsData){
-        if (err) {
-        console.error(err.stack);
-        return res.sendStatus(500);
-        }
-    
-        let id = Number.parseInt(req.params.id);
-        let pets = JSON.parse(petsData);
-    
-        if (id < 0 || id >= pets.length || Number.isNaN(id)) {
-            return res.sendStatus(404);
-        }
-        res.set('Content-Type', 'application/json');
-        //returns array with jason file of all business the user is following 
-        res.send(following[id]);
-    });
-});
-
-//return following lists specific to a user id. such as whenever the user is looking at buinessses 
+//return favorites lists specific to a contract_id
 app.get('/contracts/:id', function(req, res) {
-    fs.readFile(favoritesPath, 'utf8', function(err, petsData){
-        if (err) {
-        console.error(err.stack);
-        return res.sendStatus(500);
-        }
-    
-        let id = Number.parseInt(req.params.id);
-        let pets = JSON.parse(petsData);
-    
-        if (id < 0 || id >= pets.length || Number.isNaN(id)) {
-            return res.sendStatus(404);
-        }
-        res.set('Content-Type', 'application/json');
-        //returns array with jason file of all business the user is following 
-        res.send(following[id]);
-    });
+    let id = Number.parseInt(req.params.id);
+    knex('contracts').select().where( {
+        contract_id: id
+    })
+      .then((contract) => {
+        res.status(200).json(contract);
+      })
+      .catch((error) => {
+        res.status(500).json({ error });
+      });
 });
 
+//return favorites lists specific to a target_id
+app.get('/targets/:id', function(req, res) {
+    let id = Number.parseInt(req.params.id);
+    knex('contracts').select().where( {
+        target_id: id
+    })
+      .then((target) => {
+        res.status(200).json(target);
+      })
+      .catch((error) => {
+        res.status(500).json({ error });
+      });
+});
+
+let testObject = {name: 'test persson 2', age: 23, weapon: 'forks', minimum_fee: 3, rating: 2, kills: 4}; 
+
+app.post('/users', function(req, res) {
+    knex('users').insert([req.body])
+        .then((assassin) => {
+            res.status(200).json(assassin);
+      })
+        .catch((error) => {
+            res.status(500).json({ error });
+      });
+    });
 
 app.post('/assassins', function(req, res) {
-    fs.readFile(usersPath, 'utf8', function(err, userData){
-        if (err) {
-            console.error(err.stack);
-            return res.sendStatus(500);
-        };
+    knex('assassins').insert([req.body])
+        .then((assassin) => {
+            res.status(200).json(assassin);
+        })
+        .catch((error) => {
+            res.status(500).json({ error });
+        });
+    });
 
-        let users = JSON.parse(userData);
+app.post('/assassins_codenames', function(req, res) {
+    knex('assassins_codenames').insert([req.body])
+        .then((assassinCodename) => {
+            res.status(200).json(assassinCodename);
+        })
+        .catch((error) => {
+            res.status(500).json({ error });
+        });
+    });
 
-        let userID = 1;
-        while (users.hasOwnProperty(userID)) {
-            userID = Math.floor(Math.random()*10000000000000000);
-        }
+app.post('/clients', function(req, res) {
+    knex('clients').insert([req.body])
+        .then((client) => {
+            res.status(200).json(client);
+        })
+        .catch((error) => {
+            res.status(500).json({ error });
+        });
+    });
 
-        let username = req.body.username;
-        let email = req.body.email;
-        let password = req.body.password;
+app.post('/targets', function(req, res) {
+    knex('targets').insert([req.body])
+        .then((target) => {
+            res.status(200).json(target);
+        })
+        .catch((error) => {
+            res.status(500).json({ error });
+        });
+    });
 
-        let newUser = {
-        userID,
-        username,
-        email,
-        password,
-        };
+app.post('/contracts', function(req, res) {
+    knex('contracts').insert([req.body])
+        .then((contract) => {
+            res.status(200).json(contract);
+        })
+        .catch((error) => {
+            res.status(500).json({ error });
+        });
+    });
+
+app.post('/contracts_assassins', function(req, res) {
+    knex('contracts_assassins').insert([req.body])
+        .then((contractAssassin) => {
+            res.status(200).json(contractAssassin);
+        })
+        .catch((error) => {
+            res.status(500).json({ error });
+        });
+    });
+
+app.patch('/contracts_assassins', function(req, res) {
+    knex('contracts_assassins').insert([req.body])
+        .then((contractAssassin) => {
+            res.status(200).json(contractAssassin);
+        })
+        .catch((error) => {
+            res.status(500).json({ error });
+        });
+    });
+    
+
+
+    
+    // fs.readFile(usersPath, 'utf8', function(err, userData){
+    //     if (err) {
+    //         console.error(err.stack);
+    //         return res.sendStatus(500);
+    //     };
+
+    //     let users = JSON.parse(userData);
+
+    //     let userID = 1;
+    //     while (users.hasOwnProperty(userID)) {
+    //         userID = Math.floor(Math.random()*10000000000000000);
+    //     }
+
+    //     let username = req.body.username;
+    //     let email = req.body.email;
+    //     let password = req.body.password;
+
+    //     let newUser = {
+    //     userID,
+    //     username,
+    //     email,
+    //     password,
+    //     };
 
         //password encryption algorythm 
         // seed = devurandom.read(160/8)
         // counter = 0
 
-        if (!username || !email || !password) {
-            return res.sendStatus(400);
-        }
+//         if (!username || !email || !password) {
+//             return res.sendStatus(400);
+//         }
 
-        users[userID] = newUser;
+//         users[userID] = newUser;
 
-        let newUsersJSON = JSON.stringify(users);
+//         let newUsersJSON = JSON.stringify(users);
         
-        fs.writeFile(usersPath, newUsersJSON, function(writeErr) {
-            if (writeErr) {
-                throw writeErr;
-            };
-            res.set('Content-Type', 'application/json');
-            res.send(newUsersJSON); 
-        });
-    });
-});
+//         fs.writeFile(usersPath, newUsersJSON, function(writeErr) {
+//             if (writeErr) {
+//                 throw writeErr;
+//             };
+//             res.set('Content-Type', 'application/json');
+//             res.send(newUsersJSON); 
+//         });
+//     });
+// });
 
 // app.patch('/pets/:id', function(req, res) {
 //     fs.readFile(petsPath, 'utf8', function(err, petsData){
