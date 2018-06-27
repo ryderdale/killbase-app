@@ -3,19 +3,15 @@ let express = require('express');
 let path = require('path'); 
 let usersPath = path.join(__dirname, 'postgres://localhost/killbase');
 let app = express();
-var bodyParser = require('body-parser')
-
+let bodyParser = require('body-parser');
+app.use(express.static('static'));
 let port = process.env.PORT || 8000;
 const env = process.env.NODE_ENV || 'development';
 const config = require('./knexfile')[env];
 const knex = require('knex')(config);
-
-// let morgan = require('morgan');
-
-
-
-//im not sure what this does
 app.disable('x-powered-by');
+
+
 
 app.use(function(req, res, next) {
     //validate user id to see if this is a valid user.
@@ -31,7 +27,8 @@ app.use(function(req, res, next) {
 //     }))
 // })
 
-app.use(bodyParser.json({type: 'application/json'}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 // app.use(morgan(type));
 
@@ -53,7 +50,8 @@ app.use(bodyParser.json({type: 'application/json'}));
 // }
 
 app.get("/", function (req, res) {
-    res.send('please specifcy an object, whether assassins, clients, contracts, or targets')
+    res.send('index.html')
+    // res.send('please specifcy an object, whether assassins, clients, contracts, or targets')
 })
 
 //return an object with a list of all the assassins 
@@ -61,6 +59,16 @@ app.get('/assassins', (request, response) => {
     knex('assassins').select()
       .then((clients) => {
         response.status(200).json(clients);
+      })
+      .catch((error) => {
+        response.status(500).json({ error });
+      });
+  });
+
+  app.get('/resource-name', (request, response) => {
+    knex('ressource-name').select()
+      .then((resource) => {
+        response.status(200).json(resource);
       })
       .catch((error) => {
         response.status(500).json({ error });
@@ -158,17 +166,19 @@ app.get('/targets/:id', function(req, res) {
       });
 });
 
-let testObject = {name: 'test persson 2', age: 23, weapon: 'forks', minimum_fee: 3, rating: 2, kills: 4}; 
+let testObject = {email: 'test persson 3', handle_name: 'test-person-3', password: 'sdvsadsoks'}; 
 
 app.post('/users', function(req, res) {
-    knex('users').insert([req.body])
-        .then((assassin) => {
-            res.status(200).json(assassin);
+    console.log('Request body:', req.body);
+    knex('users').insert(req.body)
+        .then((user) => {
+            res.status(200).send(user);
       })
         .catch((error) => {
-            res.status(500).json({ error });
+            console.error(error);
+            res.status(500).send({ error });
       });
-    });
+});
 
 app.post('/assassins', function(req, res) {
     knex('assassins').insert([req.body])
@@ -211,6 +221,8 @@ app.post('/targets', function(req, res) {
     });
 
 app.post('/contracts', function(req, res) {
+    user_id = req.body.user_id; 
+    knex()
     knex('contracts').insert([req.body])
         .then((contract) => {
             res.status(200).json(contract);
@@ -230,7 +242,7 @@ app.post('/contracts_assassins', function(req, res) {
         });
     });
 
-app.patch('/contracts_assassins', function(req, res) {
+app.put('/contracts_assassins', function(req, res) {
     knex('contracts_assassins').insert([req.body])
         .then((contractAssassin) => {
             res.status(200).json(contractAssassin);
