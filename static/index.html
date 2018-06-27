@@ -12,20 +12,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 </head>
-<body>
+<body id="body-section">
     <section class="site-title">
         <h1>Agents.io</h1>
     </section>
-    <section class="login-buttons-container">
+    <section class="login-buttons-container" id='login-buttons-container'>
         <section class="signin">
             <a href="" id="create-account">Create An Account</a>
             <a href="" id="sign-in">Sign In</a>
         </section>
     </section>
     <section class="navigation">
-        <a href="" class="navigation-item">Contact An Agent</a>
-        <a href="" class="navigation-item">Offer Contracts</a>
-        <a href="" class="navigation-item">Seek Contracts</a>
+        <a href="" id='volunteer-opportunites-button' class="navigation-item">Voluteer Opportunites</a>
+        <a href="" id='event-oragnizers-button' class="navigation-item">Event Organizers</a>
+        <a href="" id='event-sponsors-button' class="navigation-item">Event Sponsors</a>
+        <a href="" id='volunteers-button' class="navigation-item">Volunteers</a>
     </section>
     <section class="search-bar-container">
         <input class="search-bar" type="text"> 
@@ -33,7 +34,7 @@
     </section>
     <section id="create-account-container" class="create-account-container">
         <form name="createAccount" class="create-account-form-container">
-            <h3>Creat An Account</h3>
+            <h3>Create An Account</h3>
             <label for="">First Name</label>
             <input name="firstName" type="text">
             <label for="">Last Name</label>
@@ -46,61 +47,13 @@
             <input name="password" type="password">
             <label for="">Confirm Password</label>
             <input name"confirm-password" type="password">
-            <h4>Identity Verification</h4>
-            <label for="">DOB</label>
-            <input type="date">
-            <label for="">Passport Number</label>
-            <input type="number">
-            <label for="">Nationality</label>
-            <select name="" id="">
-                <option value="">United States Of America</option>
-                <option value="">United Kingdom</option>
-                <option value="">Ireland</option>
-                <option value="">Germany</option>
-                <option value="">Australia</option>
-                <option value="">New Zealand</option>
-                <option value="">Spain</option>
-                <option value="">France</option>
-                <option value="">Switzerland</option>
-            </select>
-            <h4>I am</h4>
-            <input type="radio" name="user-type">
-            <label for="">Agent</label>
-            <input type="radio" name="user-type">
-            <label for="">Military Contractor</label>
-            <input type="radio">
-            <label for="">Intellegence Agency</label>
-            <section class="agent-form">
-                <h4>Agent Information</h4>
-                <label for="">Codename</label>
-                <input id="codename" type="text">
-                <label for="">Gadget</label>
-                <input id="gadget" type="text">
-                <label for="">Age</label>
-                <input id="age" type="number">
-                <label for="">Total Number of Missions</label>
-                <input id="mission-count" type="number">
-                <label for="">Missions Complete</label>
-                <input id="completed-count" type="number">
-                <label for="">Missions Aborted</label>
-                <input id="aborted-count" type="number">
-                <label for="">Training Background</label>
-                <input id="training-background" type="textarea">
-                <label for="">Which of the following intellegence networks do you work with? </label>
-                <label id="cia" for="">CIA</label>
-                <input name="cia" type="checkbox">
-                <label id="nsa" for="">NSA</label>
-                <input type="checkbox">
-                <label id="mi6" for="">MI6</label>
-                <input type="checkbox">
-            </section>
             <button id="submit-create-account">Submit Account</button>
         </form>
     </section>
     <section id="account-creation-success" hidden>
-        <h3>Agent.io Account Created Successsfully</h3>
+        <h3>Volunteers.io Account Created Successsfully</h3>
     </section>
-    <section class="sign-in-container" hidden>
+    <section class="sign-in-container" id="sign-in-container" hidden>
         <h2>Sign In</h2>
         <section class="sign-in-subcontainer">
             <label for="" style="margin-right: 1%">Username:</label>
@@ -111,6 +64,24 @@
             <input type="password">
         </section>
         <button>Sign In</button>
+    </section>
+    <section class="login-buttons-container" id="login-buttons-container" hidden>
+        <section class="signin">
+            <a href="" id="setting-button">Settings</a>
+            <a href="" id="logout-button">Logout</a>
+        </section>
+    </section>
+    <section id="volunteer-opportunites-container" hidden>
+
+    </section>
+    <section id="event-organizers-container" hidden>
+
+    </section>
+    <section id="event-sponsors-container" hidden>
+
+    </section>
+    <section id="volunteers-container" hidden>
+
     </section>
     <script src="js/main.js"></script>
 </body>

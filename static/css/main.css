@@ -28,13 +28,13 @@
 .navigation {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: center;
     margin-top: 2%;
     margin-right: 2%;
 }
 
 .navigation-item {
-    margin-left: 2%;
+    margin-left: 6%;
 }
 
 .search-bar-container {
