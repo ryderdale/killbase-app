@@ -63,7 +63,7 @@ exports.up = function(knex, Promise) {
             table.integer('min_volunteers_needed');
             table.integer('max_volunteers_needed');
             table.text('volunteer_opportunity_description');
-            table.text('volunteer_pportunity_requirments'); 
+            table.text('volunteer_opportunity_requirements'); 
         })
     })  
     .then( () => {

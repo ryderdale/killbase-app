@@ -54,22 +54,46 @@ app.get("/", function (req, res) {
     // res.send('please specifcy an object, whether assassins, clients, contracts, or targets')
 })
 
-app.post("/users/login", function (req, res) {
-    let body = req.body;
-    console.log(knex('users').select())
-    // where('email',body.email).andWhere('password',body.password))
-    .then((userId) => {
-        if(userId){
-            response.status(200).send(userId)
-        }
-        else{
-            response.status(404).send("invalid user login")
-        }
-    })
-    .catch((error) => {
-        response.status(500);
+app.post('/users', function(req, res) {
+    console.log('Request body:', req.body);
+    knex('users').insert(req.body)
+        .then((user) => {
+            res.status(200).send(user.userId);
+      })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send({ error });
       });
-})
+});
+
+// app.post("/users/login", function (req, res) {
+//     let body = req.body;
+//     // console.log(knex('users').select())
+//     // where('email',body.email).andWhere('password',body.password))
+//     .then((userId) => {
+//         if(userId){
+//             response.status(200).send(userId)
+//         }
+//         else{
+//             response.status(404).send("invalid user login")
+//         }
+//     })
+//     .catch((error) => {
+//         response.status(500);
+//       });
+// })
+
+app.post('/submit-volunteer-opportunity', function(req, res) {
+    console.log('Request body:', req.body);
+    knex('volunteer_opportunities').insert(req.body)
+        .then((data) => {
+            res.status(200).send(data);
+      })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send({ error });
+      });
+});
 
 //return an object with a list of all the assassins 
 app.get('/assassins', (request, response) => {
@@ -185,17 +209,7 @@ app.get('/targets/:id', function(req, res) {
 
 let testObject = {email: 'test person 3', handle_name: 'test-person-3', password: 'sdvsadsoks'}; 
 
-app.post('/users', function(req, res) {
-    console.log('Request body:', req.body);
-    knex('users').insert(req.body)
-        .then((user) => {
-            res.status(200).send(user.userId);
-      })
-        .catch((error) => {
-            console.error(error);
-            res.status(500).send({ error });
-      });
-});
+
 
 app.post('/assassins', function(req, res) {
     knex('assassins').insert([req.body])
