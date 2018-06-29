@@ -13,7 +13,7 @@ function popVolunteerOpportunities(content) {
             method: 'GET',
             headers: popVolunteerOpportunitiesHeader,
         }
-        let loginURL = "http://localhost:8000/get-volunteer-opportunities"; 
+        let loginURL = "/get-volunteer-opportunities"; 
         fetch(loginURL, appInit).then(function(response){
             return response.json();
         })
@@ -102,7 +102,7 @@ bodySection.addEventListener('click', (event) => {
             headers: createUserHeaders,
             body: JSON.stringify(body)
         }
-        let loginURL = "http://localhost:8000/users"; 
+        let loginURL = "/users"; 
         fetch(loginURL, appInit).then(function(response){
             return response;   
         })
@@ -213,7 +213,7 @@ bodySection.addEventListener('click', (event) => {
             headers: loginHeaders,
             body: JSON.stringify(body)
         }
-        let loginURL = "http://localhost:8000/users/login"; 
+        let loginURL = "/users/login"; 
         fetch(loginURL, appInit).then(function(response){
             user_id = response;
             return user_id;   
@@ -268,7 +268,7 @@ bodySection.addEventListener('click', (event) => {
             headers: newVolunteeringOpHeaders,
             body: JSON.stringify(body)
         }
-        let loginURL = "http://localhost:8000/submit-volunteer-opportunity"; 
+        let loginURL = "/submit-volunteer-opportunity"; 
         fetch(loginURL, appInit).then(function(response){
             return response   
         })
@@ -299,7 +299,7 @@ bodySection.addEventListener('click', (event) => {
             headers: deleteVolunteeringOpHeaders,
             body: JSON.stringify(body)
         }
-        let loginURL = "http://localhost:8000/delete-volunteer-opportunity"; 
+        let loginURL = "/delete-volunteer-opportunity"; 
         fetch(loginURL, appInit).then(function(response){
             return response   
         })
