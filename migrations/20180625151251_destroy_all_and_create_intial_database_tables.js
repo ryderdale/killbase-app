@@ -1,118 +1,108 @@
-
-
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('users', (table) => {
         table.increments('user_id').unique(); //this is the equivalent of creating a serial column, it important to add unique though so it can't be changd to the same value later. 
+        table.string('first_name');
+        table.string('last_name');
         table.string('email'); //this is the users signup email 
-        table.string('handle_name');
+        table.string('username');
         table.string('password'); //this is the users uniquely encripted password
     })
     .then( ()=> {
-        return knex.schema.createTable('agents', (table) => {
+        return knex.schema.createTable('organizers', (table) => {
             table.integer('user_id').references('user_id').inTable('users'); //this is the equivalent of creating a serial column
-            table.increments('agent_id').unique();
-            table.string('name'); //create a column thats a string called name, and require an input when entity rows are added 
-            table.integer('age'); //create a column that's a integer called age 
-            table.string('contact_information'); 
-            table.integer('minimum_contract_fee'); 
-            table.float('rating');
-            table.integer('mission_completed');
-            table.integer('missions_aborted');
+            table.increments('organizer_id').unique();  
+            table.string('organization_name'); 
+            table.string('organization_email'); 
+            table.string('organization_phone');
         })
     })
     .then( ()=> {
-        return knex.schema.createTable('agent_codenames', (table) => {
-            table.integer('agent_id').references('agent_id').inTable('agents');
-            table.string('codename');
-        })
-    })
-    .then( ()=> {
-        return knex.schema.createTable('gadgets', (table) => {
-            table.increments('gadget_id');
-            table.string('gadget_name');
-        })
-    })
-    .then( ()=> {
-        return knex.schema.createTable('agent_gadgets', (table) => {
-            table.integer('gadget_id').references('gadget_id').inTable('gadgets');
-            table.integer('agent_id').references('agent_id').inTable('agents');
+        return knex.schema.createTable('secondary_organizers', (table) => {
+            table.integer('user_id').references('user_id').inTable('users');
+            table.integer('organizer_id').references('organizer_id').inTable('organizers');
         })
     })
     .then( () => {
-        return knex.schema.createTable('intellegence_agencies', (table) => {
-            table.increments('agency_id');
-            table.string('agency_name');
-            table.string('headquarters')
+        return knex.schema.createTable('sponsors', (table) => {
+            table.integer('user_id').references('user_id').inTable('users');
+            table.increments('sponsor_id').unique();
+            table.string('sponsor_name'); //create a column thats a string called name, and require an input when entity rows are added  
+            table.string('sponsor_email'); 
+            table.string('sponsor_phone'); 
+            table.binary('seeking_sponosrships')
+
         })
     })
-    .then ( () => {
-        return knex.schema.createTable('agency_annexes') , (table) => {
-            table.increments('annex_id')
-            table.string('annex_name');
-        }
-    })
-    .then ( ()=> {
-        return knex.schema.createTable('related_agency_annexes') , (table) => {
-            table.integer('agency_id').references('agency_id').inTable('intellegence_agencies'),
-            table.integer('annex_id').references('annex_id').inTable('agency_annexes')
-        }
-    })
     .then( () => {
-        return knex.schema.createTable('targets', (table) => {
-            table.increments('target_id');
-            table.string('name');
-            table.string('location');
-            table.string('photo');
-            table.integer('security_level');
+        return knex.schema.createTable('sponsors_secondary_users', (table)=> {
+            table.integer('sponsor_id').references('sponsor_id').inTable('sponsors');
+            table.integer('user_id').references('user_id').inTable('users');
         })
     }) 
     .then( () => {
-        return knex.schema.createTable('contracts', (table)=> {
-            table.increments('contract_id');
-            table.integer('target_id').references('target_id').inTable('targets');
-            table.integer('agency_id').references('agency_id').inTable('intellegence_agencies');
-            table.integer('budget');
-            table.boolean('completed_status');
-            table.integer('completed_by').references('agent_id').inTable('agents');
+        return knex.schema.createTable('volunteers', (table) => {
+            table.integer('user_id').references('user_id').inTable('users');
+            table.increments('volunteer_id').unique();
+            table.string('volunteer_phone');
+            table.string('volunteer_email');
+            table.text('bio')
         })
-    })
+    }) 
     .then( () => {
-        return knex.schema.createTable('contracts_agents', (table)=> {
-            table.integer('contract_id').references('contract_id').inTable('contracts');
-            table.integer('agent_id').references('agent_id').inTable('agents');
+        return knex.schema.createTable('volunteer_opportunities', (table)=> {
+            table.integer('organizer_id').references('organizer_id').inTable('organizers');
+            table.increments('volunteer_opportunity_id').unique(); 
+            table.string('volunteer_opportunity_name');
+            table.string('volunteer_opportunity_location_name');
+            table.string('street');
+            table.string('city');
+            table.string('state');
+            table.string('zipcode');
+            table.string('data_time_timezone_start');
+            table.string('date_time_timezone_end');
+            table.integer('min_volunteers_needed');
+            table.integer('max_volunteers_needed');
+            table.text('volunteer_opportunity_description');
+            table.text('volunteer_pportunity_requirments'); 
         })
     })  
+    .then( () => {
+        return knex.schema.createTable('volunteer_opportunities_volunteers', (table)=> {
+            table.integer('volunteer_opportunity_id').references('volunteer_opportunity_id').inTable('volunteer_opportunities');
+            table.integer('volunteer_id').references('volunteer_id').inTable('volunteers');
+        })
+    }) 
+    .then( () => {
+        return knex.schema.createTable('volunteer_opportunities_sponsors', (table)=> {
+            table.integer('volunteer_opportunity_id').references('volunteer_opportunity_id').inTable('volunteer_opportunities');
+            table.integer('sponsor_id').references('sponsor_id').inTable('sponsors');
+        })
+    }) 
 }
 
 exports.down = function(knex, Promise) {
 
-    return knex.schema.dropTable('agent_codenames')
+    return knex.schema.dropTable('volunteer_opportunities_sponsors')
     .then( ()=> {
-        return knex.schema.dropTable('contracts_agents')
+        return knex.schema.dropTable('volunteer_opportunities_volunteers')
     })
     .then( ()=>{
-        return knex.schema.dropTable('contracts')
+        return knex.schema.dropTable('volunteer_opportunities')
     })
     .then( ()=>{
-        return knex.schema.dropTable('targets')
+        return knex.schema.dropTable('volunteers')
     })
     .then( ()=>{
-        return knex.schema.dropTable('related_agency_anexes')
+        return knex.schema.dropTable('sponsors_secondary_users')
     })
     .then( ()=>{
-        return knex.schema.dropTable('agency_anexes')
+        return knex.schema.dropTable('sponsors')
     })
     .then( ()=>{
-        return knex.schema.dropTable('intellegence_agencies')
+        return knex.schema.dropTable('secondary_organizers')
     })
     .then( ()=>{
-        return knex.schema.dropTable('agent_gadgets')
-    })
-    .then( ()=>{
-        return knex.schema.dropTable('gadgets')
-    })
-    .then( ()=>{
-        return knex.schema.dropTable('agents')
+        return knex.schema.dropTable('organizers')
     })
     .then( ()=>{
         return knex.schema.dropTable('users')

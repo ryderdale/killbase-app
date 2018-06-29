@@ -70,3 +70,21 @@
     margin-top: 1%;
     margin-bottom: 1%;
 }
+
+.add-volunteer-opportunity-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2%;
+    margin-top: 2%;
+}
+
+.add-volunteer-opportunity-form-container {
+    display: flex;
+    justify-content: center;
+}
+
+.add-volunteer-opportunity-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

@@ -22,8 +22,14 @@
             <a href="" id="sign-in">Sign In</a>
         </section>
     </section>
+    <section class="login-buttons-container" id="logout-buttons-container" hidden>
+        <section class="signin">
+            <a href="" id="setting-button">Settings</a>
+            <a href="" id="logout-button">Logout</a>
+        </section>
+    </section>
     <section class="navigation">
-        <a href="" id='volunteer-opportunites-button' class="navigation-item">Voluteer Opportunites</a>
+        <a href="" id='volunteer-opportunites-button' class="navigation-item">Voluteer Opportunites Board</a>
         <a href="" id='event-oragnizers-button' class="navigation-item">Event Organizers</a>
         <a href="" id='event-sponsors-button' class="navigation-item">Event Sponsors</a>
         <a href="" id='volunteers-button' class="navigation-item">Volunteers</a>
@@ -56,23 +62,52 @@
     <section class="sign-in-container" id="sign-in-container" hidden>
         <h2>Sign In</h2>
         <section class="sign-in-subcontainer">
-            <label for="" style="margin-right: 1%">Username:</label>
+            <label for="" style="margin-right: 1%">Username OR Email:</label>
             <input id="username" type="text">
         </section>
         <section class="sign-in-subcontainer">
             <label for="" style="margin-right: 1%">Password:</label>
             <input type="password">
         </section>
-        <button>Sign In</button>
-    </section>
-    <section class="login-buttons-container" id="login-buttons-container" hidden>
-        <section class="signin">
-            <a href="" id="setting-button">Settings</a>
-            <a href="" id="logout-button">Logout</a>
-        </section>
+        <button id='sign-in-submit'>Sign In</button>
     </section>
     <section id="volunteer-opportunites-container" hidden>
-
+        <section class="add-volunteer-opportunity-button">
+            <button id="add-volunteer-opportunity-button">+ Volunteer Opportunity</button>
+        </section>
+        <section id="add-volunteer-opportunity-form" class="add-volunteer-opportunity-form-container" hidden>
+            <form action="" name='add_volunteer_opportunity' class="add-volunteer-opportunity-form">
+                <h2>Add A Volunteer Opportunity</h2>
+                <label for="">Volunteer Opportunity Title</label>
+                <input name='volunteer_opportunity_name' type="text">
+                <label for="">Location Name</label>
+                <input name="locationName" type="text">
+                <label for="">Street</label>
+                <input name="street" type="text">
+                <label for="">City</label>
+                <input name="city" type="text">
+                <label for="">State</label>
+                <input name="state" type="text">
+                <label for="">Zipcode</label>
+                <input name="zipcode" type="text">
+                <label for="">Start Date & Time</label>
+                <input name="start_date_time" type="text">
+                <label for="">End Date & Time</label>
+                <input name="end_date_time" type="text">
+                <label for="">Minimum Volunteers Needed</label>
+                <input name="minVolunteers" type="text">
+                <label for="">Maximum Volunteers Needed</label>
+                <input name="maxVolunteers" type="text">
+                <label for="">Requirments (if applicable)</label>
+                <textarea name="requirements"></textarea>
+                <label for="">Description</label>
+                <textarea name="description"></textarea>
+                <button id='submit-volunteer-opportunity' style="margin-top:3%">Submit</button>
+            </form>
+        </section>
+        <section class='add-volunteer-opportunity-successful' id="add-volunteer-opportunity-successful">
+            <h4>Volunteer Opportunity Submission Successful</h4>
+        </section>
     </section>
     <section id="event-organizers-container" hidden>
 

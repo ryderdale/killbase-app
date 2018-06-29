@@ -4,7 +4,7 @@ module.exports = {
 
   development: {
     client: 'pg',
-    connection: 'postgres://localhost/agents_io'
+    connection: 'postgres://localhost/volunteers_io'
   },
 
   staging: {
