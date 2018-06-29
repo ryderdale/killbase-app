@@ -3,8 +3,84 @@ let signIn = document.getElementById('sign-in');
 let bodySection = document.getElementById('body-section');
 let user_id; 
 
-function popVolunteerOpportunities() {
-
+function popVolunteerOpportunities(content) {
+    console.log("populating volunteer opps");
+    let cardsContainer = document.getElementById('Volunteer_opportunites-cards-container');
+    cardsContainer.innerHTML = '';
+    let popVolunteerOpportunitiesHeader = new Headers();
+        popVolunteerOpportunitiesHeader.append('content-type', 'application/json');
+        let appInit = {
+            method: 'GET',
+            headers: popVolunteerOpportunitiesHeader,
+        }
+        let loginURL = "http://localhost:8000/get-volunteer-opportunities"; 
+        fetch(loginURL, appInit).then(function(response){
+            return response.json();
+        })
+        .then(function (content){
+            console.log(content)
+            console.log('made it to scope reseting content container')
+            let cardsContainer = document.getElementById('Volunteer_opportunites-cards-container');
+            cardsContainer.innerHTML = '';
+            content.forEach(volOpp => {
+                let card = document.createElement('section');
+                cardsContainer.appendChild(card); 
+                card.classList.add('card-list-view');
+                let cardColumn1 = document.createElement('section');
+                card.appendChild(cardColumn1);
+                cardColumn1.classList.add('card-column');
+                let cardColumn2 = document.createElement('section');
+                card.appendChild(cardColumn2);
+                cardColumn2.classList.add('card-column');
+                let cardColumn3 = document.createElement('section');
+                card.appendChild(cardColumn3);
+                cardColumn3.classList.add('card-column');
+                let cardColumn4 = document.createElement('section');
+                card.appendChild(cardColumn4);
+                cardColumn4.classList.add('card-column');
+                // let cardInfo = document.createElement('div');
+                if (volOpp.volunteer_opportunity_name) {
+                    cardColumn1.innerHTML += '<h4>'+volOpp.volunteer_opportunity_name+'</h4>';
+                }
+                if (volOpp.volunteer_opportunity_location_name) {
+                    cardColumn3.innerHTML += '<p> Location: ' + volOpp.volunteer_opportunity_location_name + '</p>';
+                }
+                if(volOpp.street) {
+                    cardColumn3.innerHTML += '<p>' + volOpp.street + '</p>'
+                }
+                if(volOpp.city) {
+                    cardColumn3.innerHTML += '<p>' + volOpp.city + '</p>'
+                }
+                if(volOpp.state) {
+                    cardColumn3.innerHTML += '<p>' + volOpp.state + '</p>'
+                }
+                if(volOpp.zipcode) {
+                    cardColumn3.innerHTML += '<p>' + volOpp.zipcode + '</p>'
+                }
+                if (volOpp.max_volunteers_needed) {
+                    cardColumn2.innerHTML += '<p>Minimum Volunteers: ' + volOpp.min_volunteers_needed + '</p>';
+                }
+                if (volOpp.max_volunteers_needed) {
+                    cardColumn2.innerHTML += '<p> Maximum Volunteers: ' + volOpp.max_volunteers_needed + '<p>';
+                }
+                if(volOpp.volunteers_count) {
+                    cardColumn1.innerHTML += '<p>Volunteers Signed Up' + volOpp.volunteers_count + '<p>';
+                }
+                if(volOpp.volunteer_opportunity_requirements) {
+                    cardColumn2.innerHTML += '<p>Requiremnts: ' + volOpp.volunteer_opportunity_requirements + '<p>';
+                }
+                if(volOpp.volunteer_opportunity_description) {
+                    cardColumn1.innerHTML += '<p>Description: ' + volOpp.volunteer_opportunity_description + '<p>';
+                }
+                cardColumn4.innerHTML += '<button class="volunteer-button" volunteer_opportunity_id="'+volOpp.volunteer_opportunity_id+'">Volunteer</button>';
+                cardColumn4.innerHTML += '<button class="edit-button" volunteer_opportunity_id="'+volOpp.volunteer_opportunity_id+'">Edit</button>';
+                cardColumn4.innerHTML += '<button class="delete-button" volunteer_opportunity_id="'+volOpp.volunteer_opportunity_id+'">Delete</button>';
+        });
+        })
+        .catch(function (error) {
+            console.error("Fetch error:", error);
+        });
+        
 }
 
 
@@ -80,6 +156,7 @@ bodySection.addEventListener('click', (event) => {
         document.getElementById('add-volunteer-opportunity-button').hidden = false;
         document.getElementById('add-volunteer-opportunity-form').hidden = true;
         document.getElementById('add-volunteer-opportunity-successful').hidden= true;
+        popVolunteerOpportunities(); 
     }
     let eventOrganizers = document.getElementById('event-oragnizers-button');
     if(event.target === eventOrganizers) {
@@ -183,19 +260,6 @@ bodySection.addEventListener('click', (event) => {
         body.max_volunteers_needed = document.add_volunteer_opportunity.maxVolunteers.value;
         body.volunteer_opportunity_requirements = document.add_volunteer_opportunity.requirements.value;
         body.volunteer_opportunity_description = document.add_volunteer_opportunity.description.value;
-        
-        // body.volunteer_opportunity_name = volunteer_opportunity_name;
-        // body.volunteer_opportunity_location_name = volunteer_opportunity_location_name;
-        // body.street = street; 
-        // body.city = city;
-        // body.state = state;
-        // body.zipcode = zipcode;
-        // body.data_time_timezone_start = data_time_timezone_start;
-        // body.date_time_timezone_end = date_time_timezone_end;
-        // body.min_volunteers_needed = min_volunteers_needed;
-        // body.max_volunteers_needed = max_volunteers_needed; 
-        // body.volunteer_opportunity_description = volunteer_opportunity_description;
-        // body.volunteer_opportunity_requirments = volunteer_opportunity_requirments;
 
         let newVolunteeringOpHeaders = new Headers();
         newVolunteeringOpHeaders.append('content-type', 'application/json');
@@ -223,4 +287,28 @@ bodySection.addEventListener('click', (event) => {
             console.error("Fetch error:", error);
         });
     }
+
+    if(event.target.classList.contains('delete-button')){
+        let volunteer_opportunity_id = event.target.attributes.volunteer_opportunity_id.value;
+        let deleteVolunteeringOpHeaders = new Headers();
+        deleteVolunteeringOpHeaders.append('content-type', 'application/json');
+        let body = {};
+        body.volunteer_opportunity_id = volunteer_opportunity_id;
+        let appInit = {
+            method: 'DELETE',
+            headers: deleteVolunteeringOpHeaders,
+            body: JSON.stringify(body)
+        }
+        let loginURL = "http://localhost:8000/delete-volunteer-opportunity"; 
+        fetch(loginURL, appInit).then(function(response){
+            return response   
+        })
+        .then(function () {
+            popVolunteerOpportunities();
+        })  
+        .catch(function (error) {
+            console.error("Fetch error:", error);
+        });
+    }
+
 });

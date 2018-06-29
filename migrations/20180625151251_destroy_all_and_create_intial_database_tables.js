@@ -62,6 +62,7 @@ exports.up = function(knex, Promise) {
             table.string('date_time_timezone_end');
             table.integer('min_volunteers_needed');
             table.integer('max_volunteers_needed');
+            table.integer('volunteers_count')
             table.text('volunteer_opportunity_description');
             table.text('volunteer_opportunity_requirements'); 
         })

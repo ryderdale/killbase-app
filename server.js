@@ -95,6 +95,27 @@ app.post('/submit-volunteer-opportunity', function(req, res) {
       });
 });
 
+
+app.get('/get-volunteer-opportunities', (request, response) => {
+    knex('volunteer_opportunities').select()
+      .then((volOpps) => {
+        response.status(200).send(volOpps);
+      })
+      .catch((error) => {
+        response.status(500).json({ error });
+      });
+  });
+
+app.delete('/delete-volunteer-opportunity', (request, response) => {
+knex('volunteer_opportunities').where('volunteer_opportunity_id', request.body.volunteer_opportunity_id).del()
+    .then(() => {
+    response.status(200);
+    })
+    .catch((error) => {
+    response.status(500).json({ error });
+    });
+});
+
 //return an object with a list of all the assassins 
 app.get('/assassins', (request, response) => {
     knex('assassins').select()
