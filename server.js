@@ -116,6 +116,18 @@ knex('volunteer_opportunities').where('volunteer_opportunity_id', request.body.v
     });
 });
 
+app.put('/edit-volunteer-opportunity', (request, response) => {
+    knex('volunteer_opportunities').where('volunteer_opportunity_id', request.body.volunteer_opportunity_id)
+      .then((volOpps) => {
+          console.log(volOpps);
+        response.status(200).send(volOpps);
+      })
+      .catch((error) => {
+        response.status(500).json({ error });
+      });
+  });
+
+
 //return an object with a list of all the assassins 
 app.get('/assassins', (request, response) => {
     knex('assassins').select()
