@@ -5,7 +5,10 @@ let user_id;
 
 function popVolunteerOpportunities(content) {
     console.log("populating volunteer opps");
-    let cardsContainer = document.getElementById('volunteer_opportunites-cards-container');
+    document.getElementById('add-volunteer-opportunity-button').hidden = false;
+    document.getElementById('volunteer-opportunites-container').hidden = false;
+    document.getElementById('volunteer-opportunities-cards-container').hidden = false;
+    let cardsContainer = document.getElementById('volunteer-opportunities-cards-container');
     cardsContainer.innerHTML = '';
     let popVolunteerOpportunitiesHeader = new Headers();
         popVolunteerOpportunitiesHeader.append('content-type', 'application/json');
@@ -20,7 +23,7 @@ function popVolunteerOpportunities(content) {
         .then(function (content){
             console.log(content)
             console.log('made it to scope reseting content container')
-            let cardsContainer = document.getElementById('volunteer_opportunites-cards-container');
+            let cardsContainer = document.getElementById('volunteer-opportunities-cards-container');
             cardsContainer.innerHTML = '';
             content.forEach(volOpp => {
                 let card = document.createElement('section');
@@ -64,7 +67,7 @@ function popVolunteerOpportunities(content) {
                     cardColumn2.innerHTML += '<p> Maximum Volunteers: ' + volOpp.max_volunteers_needed + '<p>';
                 }
                 if(volOpp.volunteers_count) {
-                    cardColumn1.innerHTML += '<p>Volunteers Signed Up' + volOpp.volunteers_count + '<p>';
+                    cardColumn1.innerHTML += '<p>Volunteers Signed Up: ' + volOpp.volunteers_count + '<p>';
                 }
                 if(volOpp.volunteer_opportunity_requirements) {
                     cardColumn2.innerHTML += '<p>Requiremnts: ' + volOpp.volunteer_opportunity_requirements + '<p>';
@@ -72,9 +75,9 @@ function popVolunteerOpportunities(content) {
                 if(volOpp.volunteer_opportunity_description) {
                     cardColumn1.innerHTML += '<p>Description: ' + volOpp.volunteer_opportunity_description + '<p>';
                 }
-                cardColumn4.innerHTML += '<button class="volunteer-button" volunteer_opportunity_id="'+volOpp.volunteer_opportunity_id+'">Volunteer</button>';
-                cardColumn4.innerHTML += '<button class="edit-button" volunteer_opportunity_id="'+volOpp.volunteer_opportunity_id+'">Edit</button>';
-                cardColumn4.innerHTML += '<button class="delete-button" volunteer_opportunity_id="'+volOpp.volunteer_opportunity_id+'">Delete</button>';
+                cardColumn4.innerHTML += '<button class="volunteer-button" volunteerOpportunityId="'+volOpp.volunteer_opportunity_id+'">Volunteer</button>';
+                cardColumn4.innerHTML += '<button class="edit-button" volunteerOpportunityId="'+volOpp.volunteer_opportunity_id+'">Edit</button>';
+                cardColumn4.innerHTML += '<button class="delete-button" volunteerOpportunityId="'+volOpp.volunteer_opportunity_id+'">Delete</button>';
         });
         })
         .catch(function (error) {
@@ -104,21 +107,15 @@ bodySection.addEventListener('click', (event) => {
         }
         let loginURL = "/users"; 
         fetch(loginURL, appInit).then(function(response){
-            return response;   
+            console.log(response);
+            return response.json()
         })
-        .then(function (user_id) {
-            // console.log('User response parsed:', JSON.parse(response));
-            if (user_id) {
-                user_id = user_id; 
-                console.log(user_id);
-                document.getElementById('create-account-container').hidden = true;
-                document.getElementById('account-creation-success').hidden= false;
-                document.getElementById('login-buttons-container').hidden = true;
-                document.getElementById('logout-buttons-container').hidden= false;
-            }
-            else {
-                alert("error submitting request to create account. Please check you internet connection and try again")
-            }
+        .then(function (response) {
+            user_id = response[0].user_id; 
+            document.getElementById('create-account-container').hidden = true;
+            document.getElementById('account-creation-success').hidden= false;
+            document.getElementById('login-buttons-container').hidden = true;
+            document.getElementById('logout-buttons-container').hidden= false;
         })
         .catch(function (error) {
             console.error("Fetch error:", error);
@@ -134,6 +131,7 @@ bodySection.addEventListener('click', (event) => {
         document.getElementById('add-volunteer-opportunity-form').hidden = true;
         document.getElementById('add-volunteer-opportunity-button').hidden = true;
         document.getElementById('add-volunteer-opportunity-successful').hidden= true;
+        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
     }
     let signin = document.getElementById('sign-in')
     if (event.target === signin) {
@@ -143,21 +141,19 @@ bodySection.addEventListener('click', (event) => {
         document.getElementById('add-volunteer-opportunity-form').hidden = true;
         document.getElementById('add-volunteer-opportunity-button').hidden = true;
         document.getElementById('add-volunteer-opportunity-successful').hidden= true;
+        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
     }
     let volunteerOpportunities = document.getElementById('volunteer-opportunites-button');
     if(event.target === volunteerOpportunities){
         document.getElementById('create-account-container').hidden = true;
         document.getElementById('account-creation-success').hidden = true;
         document.getElementById('sign-in-container').hidden = true;
-        document.getElementById('volunteer-opportunites-container').hidden = false;
         document.getElementById("event-organizers-container").hidden = true;
         document.getElementById("event-sponsors-container").hidden = true;
         document.getElementById("volunteers-container").hidden = true;
-        document.getElementById('add-volunteer-opportunity-button').hidden = false;
         document.getElementById('add-volunteer-opportunity-form').hidden = true;
         document.getElementById('add-volunteer-opportunity-successful').hidden = true;
         document.getElementById("edit-volunteer-opportunity").hidden = true;
-        document.getElementById("submit-volunteer-opportunity").hidden = false;
         popVolunteerOpportunities(); 
     }
     let eventOrganizers = document.getElementById('event-oragnizers-button');
@@ -172,6 +168,7 @@ bodySection.addEventListener('click', (event) => {
         document.getElementById('add-volunteer-opportunity-button').hidden = true;
         document.getElementById('add-volunteer-opportunity-form').hidden = true;
         document.getElementById('add-volunteer-opportunity-successful').hidden= true;
+        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
     }
     let eventSponsors = document.getElementById('event-sponsors-button');
     if(event.target === eventSponsors) {
@@ -185,6 +182,7 @@ bodySection.addEventListener('click', (event) => {
         document.getElementById('add-volunteer-opportunity-button').hidden = true;
         document.getElementById('add-volunteer-opportunity-form').hidden = true;
         document.getElementById('add-volunteer-opportunity-successful').hidden= true;
+        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
 
     }
     let volunteers = document.getElementById('volunteers-button');
@@ -199,15 +197,13 @@ bodySection.addEventListener('click', (event) => {
         document.getElementById('add-volunteer-opportunity-button').hidden = true;
         document.getElementById('add-volunteer-opportunity-form').hidden = true;
         document.getElementById('add-volunteer-opportunity-successful').hidden= true;
+        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
     }
     let signinSubmit = document.getElementById('sign-in-submit');
     if (event.target === signinSubmit) {
         let body = {};
-        let username = document.createAccount.username.value;
-        let email = document.createAccount.email.value;
-        body.username = username;
-        body.password = document.createAccount.password.value;
-
+        body.email = document.loginAccount.email.value;
+        body.password = document.loginAccount.password.value;
         let loginHeaders = new Headers();
         loginHeaders.append('content-type', 'application/json');
         let appInit = {
@@ -217,21 +213,16 @@ bodySection.addEventListener('click', (event) => {
         }
         let loginURL = "/users/login"; 
         fetch(loginURL, appInit).then(function(response){
-            user_id = response;
-            return user_id;   
+            return response.json();   
         })
-        // .then(function (user_id) {
-        //     // console.log('User response parsed:', JSON.parse(response));
-        //     if (user_id) {
-        //         user_id = user_id;
-        //         console.log(user_id);
-        //         document.getElementById('login-buttons-container').hidden = true;
-        //         document.getElementById('logout-buttons-container').hidden= false;
-        //     }
-        //     else {
-        //         alert("Error submitting request to login to account. Please check your internet connection and try again")
-        //     }
-        // })
+        .then((user)=>{
+            user_id = user[0].user_id; 
+            document.getElementById('sign-in-container').hidden = true;
+            document.getElementById('login-buttons-container').hidden = true;
+            document.getElementById('logout-buttons-container').hidden= false;
+            popVolunteerOpportunities(); 
+           
+        })
         .catch(function (error) {
             console.error("Fetch error:", error);
         });
@@ -246,6 +237,8 @@ bodySection.addEventListener('click', (event) => {
     if (event.target === addVolunteerOpportunity) {
         document.getElementById('add-volunteer-opportunity-form').hidden = false;
         document.getElementById('add-volunteer-opportunity-button').hidden = true;
+        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
+
     }
     let submitVolunteerOpportunity = document.getElementById('submit-volunteer-opportunity');
     if(event.target === submitVolunteerOpportunity) {
@@ -260,6 +253,7 @@ bodySection.addEventListener('click', (event) => {
         body.date_time_timezone_end = document.add_volunteer_opportunity.end_date_time.value;
         body.min_volunteers_needed = document.add_volunteer_opportunity.minVolunteers.value;
         body.max_volunteers_needed = document.add_volunteer_opportunity.maxVolunteers.value;
+        body.volunteers_count = 0;
         body.volunteer_opportunity_requirements = document.add_volunteer_opportunity.requirements.value;
         body.volunteer_opportunity_description = document.add_volunteer_opportunity.description.value;
 
@@ -291,7 +285,7 @@ bodySection.addEventListener('click', (event) => {
     }
 
     if(event.target.classList.contains('delete-button')){
-        let volunteer_opportunity_id = event.target.attributes.volunteer_opportunity_id.value;
+        let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
         let deleteVolunteeringOpHeaders = new Headers();
         deleteVolunteeringOpHeaders.append('content-type', 'application/json');
         let body = {};
@@ -303,7 +297,7 @@ bodySection.addEventListener('click', (event) => {
         }
         let loginURL = "/delete-volunteer-opportunity"; 
         fetch(loginURL, appInit).then(function(response){
-            return response   
+            return response  
         })
         .then(function () {
             popVolunteerOpportunities();
@@ -315,8 +309,9 @@ bodySection.addEventListener('click', (event) => {
     if(event.target.classList.contains('edit-button')){
         document.getElementById('add-volunteer-opportunity-form').hidden = false;
         document.getElementById('add-volunteer-opportunity-button').hidden = true;
-        document.getElementById('volunteer_opportunites-cards-container').hidden = true;
-        let volunteer_opportunity_id = event.target.attributes.volunteer_opportunity_id.value;
+        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
+        let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
+        document.getElementById('edit-volunteer-opportunity').setAttribute('volunteerOpportunityId',volunteer_opportunity_id);
         let deleteVolunteeringOpHeaders = new Headers();
         deleteVolunteeringOpHeaders.append('content-type', 'application/json');
         let body = {};
@@ -326,14 +321,11 @@ bodySection.addEventListener('click', (event) => {
             headers: deleteVolunteeringOpHeaders,
             body: JSON.stringify(body)
         }
-        let loginURL = "/edit-volunteer-opportunity"; 
+        let loginURL = "/edit-volunteer-opportunity-form"; 
         fetch(loginURL, appInit).then(function(response){
             return response.json();   
         })
         .then(function (event) {
-            // console.log(event[0]);
-            // console.log(event[0].volunteer_opportunity_name);
-            // console.log(document.getElementsByName('volunteer_opportunity_name')[0]);
             document.getElementsByName('volunteer_opportunity_name')[0].value = event[0].volunteer_opportunity_name;
             document.getElementsByName('locationName')[0].value = event[0].volunteer_opportunity_location_name;
             document.getElementsByName('street')[0].value = event[0].street;
@@ -348,6 +340,68 @@ bodySection.addEventListener('click', (event) => {
             document.getElementsByName('description')[0].value = event[0].volunteer_opportunity_description;
             document.getElementById("edit-volunteer-opportunity").hidden = false;
             document.getElementById("submit-volunteer-opportunity").hidden = true;
+        })  
+        .catch(function (error) {
+            console.error("Fetch error:", error);
+        });
+    }
+    let editSubmit = document.getElementById('edit-volunteer-opportunity');
+    if(event.target === editSubmit) {
+        let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
+        let editVolunteeringOpHeaders = new Headers();
+        editVolunteeringOpHeaders.append('content-type', 'application/json');
+        let body = {};
+        body.volunteer_opportunity_id = volunteer_opportunity_id;
+        body.volunteer_opportunity_name = document.add_volunteer_opportunity.volunteer_opportunity_name.value;
+        body.volunteer_opportunity_location_name = document.add_volunteer_opportunity.locationName.value;
+        body.street = document.add_volunteer_opportunity.street.value;
+        body.city = document.add_volunteer_opportunity.city.value;
+        body.state = document.add_volunteer_opportunity.state.value;
+        body.zipcode = document.add_volunteer_opportunity.zipcode.value;
+        body.data_time_timezone_start = document.add_volunteer_opportunity.start_date_time.value;
+        body.date_time_timezone_end = document.add_volunteer_opportunity.end_date_time.value;
+        body.min_volunteers_needed = document.add_volunteer_opportunity.minVolunteers.value;
+        body.max_volunteers_needed = document.add_volunteer_opportunity.maxVolunteers.value;
+        body.volunteer_opportunity_requirements = document.add_volunteer_opportunity.requirements.value;
+        body.volunteer_opportunity_description = document.add_volunteer_opportunity.description.value;
+        let appInit = {
+            method: 'PUT',
+            headers: editVolunteeringOpHeaders,
+            body: JSON.stringify(body)
+        }
+        let loginURL = "/edit-volunteer-opportunity-submit"; 
+        fetch(loginURL, appInit).then(function(response){
+            return response.json();   
+        })
+        .then(function (event) {
+            console.log(event);
+        })  
+        .then(function () {
+            volunteerOpportunities.click();
+        })
+        .catch(function (error) {
+            console.error("Fetch error:", error);
+        });
+    }
+    if(event.target.classList.contains('volunteer-button')) {
+        let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
+        let addVolunteeringOpHeaders = new Headers();
+        addVolunteeringOpHeaders.append('content-type', 'application/json');
+        let body = {};
+        body.volunteer_opportunity_id = volunteer_opportunity_id;
+        let appInit = {
+            method: 'PUT',
+            headers: addVolunteeringOpHeaders,
+            body: JSON.stringify(body)
+        }
+        console.log('volunteer button clicked')
+        let loginURL = "/volunteer-opportunity-user-commit"; 
+        fetch(loginURL, appInit).then(function(response){
+            console.log('fetch initiated');
+            return response.json();   
+        })
+        .then(function (event) {
+            console.log(event);
         })  
         .catch(function (error) {
             console.error("Fetch error:", error);

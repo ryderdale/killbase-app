@@ -59,24 +59,23 @@
     <section id="account-creation-success" hidden>
         <h3>Volunteers.io Account Created Successsfully</h3>
     </section>
-    <section class="sign-in-container" id="sign-in-container" hidden>
-        <h2>Sign In</h2>
-        <section class="sign-in-subcontainer">
-            <label for="" style="margin-right: 1%">Username OR Email:</label>
-            <input id="username" type="text">
-        </section>
-        <section class="sign-in-subcontainer">
+    <section class="create-account-container" id="sign-in-container" hidden>
+        <form action=""name="loginAccount" class="create-account-form-container">
+            <h2>Sign In</h2>
+            <label for="" style="margin-right: 1%">Email:</label>
+            <input name="email" type="text">
             <label for="" style="margin-right: 1%">Password:</label>
-            <input type="password">
-        </section>
-        <button id='sign-in-submit'>Sign In</button>
+            <input name="password" type="password">
+            <button id='sign-in-submit'>Sign In</button>
+        </form>
+        
     </section>
     <section id="volunteer-opportunites-container" hidden>
         <section class="add-volunteer-opportunity-button">
             <button id="add-volunteer-opportunity-button">+ Volunteer Opportunity</button>
         </section>
         <section  class="display-content">
-                <section class="cards-container-list" id="volunteer_opportunites-cards-container"> 
+                <section class="cards-container-list" id="volunteer-opportunities-cards-container"> 
                 </section>
         </section>
         <section id="add-volunteer-opportunity-form" class="add-volunteer-opportunity-form-container" hidden>
@@ -107,7 +106,7 @@
                 <label for="">Description</label>
                 <textarea name="description"></textarea>
                 <button id='submit-volunteer-opportunity' style="margin-top:3%">Submit</button>
-                <button id='edit-volunteer-opportunity'style="margin-top:3%">Add Edit</button>
+                <button id='edit-volunteer-opportunity' volunteerOpportunityId="" style="margin-top:3%" hidden>Add Edit</button>
             </form>
         </section>
         <section class='add-volunteer-opportunity-successful' id="add-volunteer-opportunity-successful" hidden>
