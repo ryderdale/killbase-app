@@ -1,4 +1,5 @@
 // Update with your config settings.
+// require('dotenv').load();
 
 module.exports = {
 
@@ -25,12 +26,8 @@ module.exports = {
 
   production: {
     client: 'postgresql',
-    connection: {
-      database: 'dbg8f8sgu8ssq8',
-      user:     'bqalfbsrfgveyv',
-      port: 'bqalfbsrfgveyv',
-      password: '41f78a9719dea015c7225753f5aabd21f33e807a4911dcd60679b7d39ba3371f',
-      URI: 'postgres://bqalfbsrfgveyv:41f78a9719dea015c7225753f5aabd21f33e807a4911dcd60679b7d39ba3371f@ec2-54-235-196-250.compute-1.amazonaws.com:5432/dbg8f8sgu8ssq8'
+    connection: process.env.DATABASE_USE
+    // 'postgres://bqalfbsrfgveyv:41f78a9719dea015c7225753f5aabd21f33e807a4911dcd60679b7d39ba3371f@ec2-54-235-196-250.compute-1.amazonaws.com:5432/dbg8f8sgu8ssq8'
     },
     pool: {
       min: 2,

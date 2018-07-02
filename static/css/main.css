@@ -5,6 +5,10 @@
     justify-content: center;
 } */
 
+p {
+    margin-bottom: 0px; 
+}
+
 .site-title {
     display: flex; 
     flex-direction: row;
@@ -116,7 +120,7 @@
     transition: 0.3s;
     margin-left: 30px;
     margin-bottom: 30px;
-    height: 180px;
+    /* height: 180px; */
     width: 90%;
 }
 

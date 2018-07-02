@@ -3,7 +3,7 @@ let signIn = document.getElementById('sign-in');
 let bodySection = document.getElementById('body-section');
 let user_id; 
 
-function popVolunteerOpportunities(content) {
+function popVolunteerOpportunities() {
     console.log("populating volunteer opps");
     document.getElementById('add-volunteer-opportunity-button').hidden = false;
     document.getElementById('volunteer-opportunites-container').hidden = false;
@@ -51,11 +51,8 @@ function popVolunteerOpportunities(content) {
                 if(volOpp.street) {
                     cardColumn3.innerHTML += '<p>' + volOpp.street + '</p>'
                 }
-                if(volOpp.city) {
-                    cardColumn3.innerHTML += '<p>' + volOpp.city + '</p>'
-                }
-                if(volOpp.state) {
-                    cardColumn3.innerHTML += '<p>' + volOpp.state + '</p>'
+                if(volOpp.city && volOpp.state) {
+                    cardColumn3.innerHTML += '<p>' + volOpp.city +', ' +volOpp.state+'</p>'
                 }
                 if(volOpp.zipcode) {
                     cardColumn3.innerHTML += '<p>' + volOpp.zipcode + '</p>'
@@ -89,39 +86,41 @@ function popVolunteerOpportunities(content) {
 
 bodySection.addEventListener('click', (event) => {
     event.preventDefault();
+
     let createAccountSubmit = document.getElementById('submit-create-account');
     if (event.target === createAccountSubmit) {
+        // createAccountInstance();
         let body = {};  
-        body.first_name = document.createAccount.firstName.value;
-        body.last_name = document.createAccount.lastName.value;
-        body.email = document.createAccount.email.value;
-        body.username = document.createAccount.username.value;
-        body.password = document.createAccount.password.value;
-        console.log('Body data', body);
-        let createUserHeaders = new Headers();
-        createUserHeaders.append('content-type', 'application/json');
-        let appInit = {
-            method: 'POST',
-            headers: createUserHeaders,
-            body: JSON.stringify(body)
-        }
-        let loginURL = "/users"; 
-        fetch(loginURL, appInit).then(function(response){
-            console.log(response);
-            return response.json()
-        })
-        .then(function (response) {
-            user_id = response[0].user_id; 
-            document.getElementById('create-account-container').hidden = true;
-            document.getElementById('account-creation-success').hidden= false;
-            document.getElementById('login-buttons-container').hidden = true;
-            document.getElementById('logout-buttons-container').hidden= false;
-        })
-        .catch(function (error) {
-            console.error("Fetch error:", error);
-        });
+    body.first_name = document.createAccount.firstName.value;
+    body.last_name = document.createAccount.lastName.value;
+    body.email = document.createAccount.email.value;
+    body.username = document.createAccount.username.value;
+    body.password = document.createAccount.password.value;
+    console.log('Body data', body);
+    let createUserHeaders = new Headers();
+    createUserHeaders.append('content-type', 'application/json');
+    let appInit = {
+        method: 'POST',
+        headers: createUserHeaders,
+        body: JSON.stringify(body)
+    }
+    let loginURL = "/users"; 
+    fetch(loginURL, appInit).then(function(response){
+        console.log(response);
+        return response.json()
+    })
+    .then(function (response) {
+        user_id = response[0].user_id; 
+        document.getElementById('create-account-container').hidden = true;
+        document.getElementById('account-creation-success').hidden= false;
+        document.getElementById('login-buttons-container').hidden = true;
+        document.getElementById('logout-buttons-container').hidden= false;
+    })
+    .catch(function (error) {
+        console.error("Fetch error:", error);
+    });
 
-        console.log(body);
+    console.log(body);
     }
     let createAccount = document.getElementById('create-account');
     if (event.target === createAccount) {
@@ -227,6 +226,24 @@ bodySection.addEventListener('click', (event) => {
             console.error("Fetch error:", error);
         });
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     let logout = document.getElementById('logout-button');
     if (event.target === logout) {
         document.getElementById('login-buttons-container').hidden = false;
@@ -238,6 +255,8 @@ bodySection.addEventListener('click', (event) => {
         document.getElementById('add-volunteer-opportunity-form').hidden = false;
         document.getElementById('add-volunteer-opportunity-button').hidden = true;
         document.getElementById('volunteer-opportunities-cards-container').hidden = true;
+        document.getElementById("edit-volunteer-opportunity").hidden = false;
+        document.getElementById("submit-volunteer-opportunity").hidden = true;
 
     }
     let submitVolunteerOpportunity = document.getElementById('submit-volunteer-opportunity');
