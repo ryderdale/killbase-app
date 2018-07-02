@@ -8,6 +8,7 @@ function popVolunteerOpportunities() {
     document.getElementById('add-volunteer-opportunity-button').hidden = false;
     document.getElementById('volunteer-opportunites-container').hidden = false;
     document.getElementById('volunteer-opportunities-cards-container').hidden = false;
+    
     let cardsContainer = document.getElementById('volunteer-opportunities-cards-container');
     cardsContainer.innerHTML = '';
     let popVolunteerOpportunitiesHeader = new Headers();
@@ -152,7 +153,6 @@ bodySection.addEventListener('click', (event) => {
         document.getElementById("volunteers-container").hidden = true;
         document.getElementById('add-volunteer-opportunity-form').hidden = true;
         document.getElementById('add-volunteer-opportunity-successful').hidden = true;
-        document.getElementById("edit-volunteer-opportunity").hidden = true;
         popVolunteerOpportunities(); 
     }
     let eventOrganizers = document.getElementById('event-oragnizers-button');
@@ -255,8 +255,8 @@ bodySection.addEventListener('click', (event) => {
         document.getElementById('add-volunteer-opportunity-form').hidden = false;
         document.getElementById('add-volunteer-opportunity-button').hidden = true;
         document.getElementById('volunteer-opportunities-cards-container').hidden = true;
-        document.getElementById("edit-volunteer-opportunity").hidden = false;
-        document.getElementById("submit-volunteer-opportunity").hidden = true;
+        document.getElementById("edit-volunteer-opportunity").hidden = true;
+        document.getElementById("submit-volunteer-opportunity").hidden = false;
 
     }
     let submitVolunteerOpportunity = document.getElementById('submit-volunteer-opportunity');
