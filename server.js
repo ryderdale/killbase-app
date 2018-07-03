@@ -103,7 +103,7 @@ app.get('/get-volunteer-opportunities', (request, response) => {
         response.status(200).send(volOpps);
       })
       .catch((error) => {
-        response.status(500).json({ error });
+        response.status(500).send({ error });
       });
   });
 
