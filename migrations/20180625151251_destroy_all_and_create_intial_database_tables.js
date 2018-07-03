@@ -45,6 +45,12 @@ exports.up = function(knex, Promise) {
             table.increments('volunteer_id').unique();
             table.string('volunteer_phone');
             table.string('volunteer_email');
+            table.string('photo_url');
+            table.binary('send_volunteer_opps');
+            table.binary('send_details_via_text');
+            table.binary('send_reminders');
+            table.binary('make_profile_public');
+            table.binary('display_username_only');
             table.text('bio')
         })
     }) 

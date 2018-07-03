@@ -1,6 +1,7 @@
 //use pushState() to change the url and allow manipulations to still receive a backbuton 
 let signIn = document.getElementById('sign-in');
 let bodySection = document.getElementById('body-section');
+
 let user_id; 
 
 function popVolunteerOpportunities() {
@@ -83,184 +84,88 @@ function popVolunteerOpportunities() {
         });
         
 }
-
-
-bodySection.addEventListener('click', (event) => {
-    event.preventDefault();
-
-    let createAccountSubmit = document.getElementById('submit-create-account');
-    if (event.target === createAccountSubmit) {
-        // createAccountInstance();
-        let body = {};  
-    body.first_name = document.createAccount.firstName.value;
-    body.last_name = document.createAccount.lastName.value;
-    body.email = document.createAccount.email.value;
-    body.username = document.createAccount.username.value;
-    body.password = document.createAccount.password.value;
-    console.log('Body data', body);
-    let createUserHeaders = new Headers();
-    createUserHeaders.append('content-type', 'application/json');
-    let appInit = {
-        method: 'POST',
-        headers: createUserHeaders,
-        body: JSON.stringify(body)
-    }
-    let loginURL = "/users"; 
-    fetch(loginURL, appInit).then(function(response){
-        console.log(response);
-        return response.json()
-    })
-    .then(function (response) {
-        user_id = response[0].user_id; 
-        document.getElementById('create-account-container').hidden = true;
-        document.getElementById('account-creation-success').hidden= false;
-        document.getElementById('login-buttons-container').hidden = true;
-        document.getElementById('logout-buttons-container').hidden= false;
-    })
-    .catch(function (error) {
-        console.error("Fetch error:", error);
+    //upper right navigation links
+    let createAccount = document.getElementById('create-account');
+    createAccount.addEventListener('click', (event) => { 
+        event.preventDefault();
+        createAccountButton();
     });
 
-    console.log(body);
-    }
-    let createAccount = document.getElementById('create-account');
-    if (event.target === createAccount) {
-        document.getElementById('sign-in-container').hidden = true;
-        document.getElementById('create-account-container').hidden = false;
-        document.getElementById('account-creation-success').hidden= true;
-        document.getElementById('add-volunteer-opportunity-form').hidden = true;
-        document.getElementById('add-volunteer-opportunity-button').hidden = true;
-        document.getElementById('add-volunteer-opportunity-successful').hidden= true;
-        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
-    }
     let signin = document.getElementById('sign-in')
-    if (event.target === signin) {
-        document.getElementById('create-account-container').hidden = true;
-        document.getElementById('account-creation-success').hidden= true;
-        document.getElementById('sign-in-container').hidden = false;
-        document.getElementById('add-volunteer-opportunity-form').hidden = true;
-        document.getElementById('add-volunteer-opportunity-button').hidden = true;
-        document.getElementById('add-volunteer-opportunity-successful').hidden= true;
-        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
-    }
-    let volunteerOpportunities = document.getElementById('volunteer-opportunites-button');
-    if(event.target === volunteerOpportunities){
-        document.getElementById('create-account-container').hidden = true;
-        document.getElementById('account-creation-success').hidden = true;
-        document.getElementById('sign-in-container').hidden = true;
-        document.getElementById("event-organizers-container").hidden = true;
-        document.getElementById("event-sponsors-container").hidden = true;
-        document.getElementById("volunteers-container").hidden = true;
-        document.getElementById('add-volunteer-opportunity-form').hidden = true;
-        document.getElementById('add-volunteer-opportunity-successful').hidden = true;
-        popVolunteerOpportunities(); 
-    }
-    let eventOrganizers = document.getElementById('event-oragnizers-button');
-    if(event.target === eventOrganizers) {
-        document.getElementById('create-account-container').hidden = true;
-        document.getElementById('account-creation-success').hidden= true;
-        document.getElementById('sign-in-container').hidden = true;
-        document.getElementById('volunteer-opportunites-container').hidden = true;
-        document.getElementById("event-organizers-container").hidden = false;
-        document.getElementById("event-sponsors-container").hidden = true;
-        document.getElementById("volunteers-container").hidden = true;
-        document.getElementById('add-volunteer-opportunity-button').hidden = true;
-        document.getElementById('add-volunteer-opportunity-form').hidden = true;
-        document.getElementById('add-volunteer-opportunity-successful').hidden= true;
-        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
-    }
-    let eventSponsors = document.getElementById('event-sponsors-button');
-    if(event.target === eventSponsors) {
-        document.getElementById('create-account-container').hidden = true;
-        document.getElementById('account-creation-success').hidden= true;
-        document.getElementById('sign-in-container').hidden = true;
-        document.getElementById('volunteer-opportunites-container').hidden = true;
-        document.getElementById("event-organizers-container").hidden = true;
-        document.getElementById("event-sponsors-container").hidden = false;
-        document.getElementById("volunteers-container").hidden = true;
-        document.getElementById('add-volunteer-opportunity-button').hidden = true;
-        document.getElementById('add-volunteer-opportunity-form').hidden = true;
-        document.getElementById('add-volunteer-opportunity-successful').hidden= true;
-        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
-
-    }
-    let volunteers = document.getElementById('volunteers-button');
-    if(event.target === volunteers) {
-        document.getElementById('create-account-container').hidden = true;
-        document.getElementById('account-creation-success').hidden= true;
-        document.getElementById('sign-in-container').hidden = true;
-        document.getElementById('volunteer-opportunites-container').hidden = true;
-        document.getElementById("event-organizers-container").hidden = true;
-        document.getElementById("event-sponsors-container").hidden = true;
-        document.getElementById("volunteers-container").hidden = false;
-        document.getElementById('add-volunteer-opportunity-button').hidden = true;
-        document.getElementById('add-volunteer-opportunity-form').hidden = true;
-        document.getElementById('add-volunteer-opportunity-successful').hidden= true;
-        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
-    }
-    let signinSubmit = document.getElementById('sign-in-submit');
-    if (event.target === signinSubmit) {
-        let body = {};
-        body.email = document.loginAccount.email.value;
-        body.password = document.loginAccount.password.value;
-        let loginHeaders = new Headers();
-        loginHeaders.append('content-type', 'application/json');
-        let appInit = {
-            method: 'POST',
-            headers: loginHeaders,
-            body: JSON.stringify(body)
-        }
-        let loginURL = "/users/login"; 
-        fetch(loginURL, appInit).then(function(response){
-            return response.json();   
-        })
-        .then((user)=>{
-            user_id = user[0].user_id; 
-            document.getElementById('sign-in-container').hidden = true;
-            document.getElementById('login-buttons-container').hidden = true;
-            document.getElementById('logout-buttons-container').hidden= false;
-            popVolunteerOpportunities(); 
-           
-        })
-        .catch(function (error) {
-            console.error("Fetch error:", error);
-        });
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    signin.addEventListener('click', (event) => { 
+        event.preventDefault();
+        signInButton();
+    });
 
     let logout = document.getElementById('logout-button');
-    if (event.target === logout) {
+    logout.addEventListener('click', (event) => {
         document.getElementById('login-buttons-container').hidden = false;
         document.getElementById('logout-buttons-container').hidden= true;
-        let user_id = undefined; 
-    }
+        let user_id = undefined;
+    })
+    
+
+
+    //create account forms sumbit
+    let createAccountSubmit = document.getElementById('submit-create-account');
+    createAccountSubmit.addEventListener('click', (event) => {
+        event.preventDefault();
+        createUserInstance()
+    });
+
+    let submitVolunteerProfile = document.getElementById('submit-volunteer-profile');
+    submitVolunteerProfile.addEventListener('click', (event) => {
+        event.preventDefault();
+        createVolunteerInstance(); 
+    })
+
+
+    //main navigation links 
+    let volunteerOpportunities = document.getElementById('volunteer-opportunites-button');
+    volunteerOpportunities.addEventListener('click', (event) => {
+        event.preventDefault();
+        volunteerOpportunitiesLink()
+    });
+
+    let eventOrganizers = document.getElementById('event-oragnizers-button');
+    eventOrganizers.addEventListener('click', (event) => {
+        event.preventDefault();
+        eventOrganizersLink();
+    });
+    
+    let eventSponsors = document.getElementById('event-sponsors-button');
+    eventSponsors.addEventListener('click', (event) => {
+        event.preventDefault();
+        eventSponsorsLink();
+    });
+
+
+    let volunteers = document.getElementById('volunteers-button');
+    volunteers.addEventListener('click', (event) => { 
+        event.preventDefault();
+        volunteersLink();
+    });
+    
+    //signin form submit 
+    let signinSubmit = document.getElementById('sign-in-submit');
+    signinSubmit.addEventListener('click', (event) => { 
+        event.preventDefault();
+        signinSubmitFetch();
+    }); 
+
+
     let addVolunteerOpportunity = document.getElementById('add-volunteer-opportunity-button');
-    if (event.target === addVolunteerOpportunity) {
+    addVolunteerOpportunity.addEventListener('click', (event) => { 
+        event.preventDefault();
         document.getElementById('add-volunteer-opportunity-form').hidden = false;
         document.getElementById('add-volunteer-opportunity-button').hidden = true;
         document.getElementById('volunteer-opportunities-cards-container').hidden = true;
         document.getElementById("edit-volunteer-opportunity").hidden = true;
         document.getElementById("submit-volunteer-opportunity").hidden = false;
+    });
 
-    }
     let submitVolunteerOpportunity = document.getElementById('submit-volunteer-opportunity');
-    if(event.target === submitVolunteerOpportunity) {
+    submitVolunteerOpportunity.addEventListener('click', (event) => { 
         let body = {};
         body.volunteer_opportunity_name = document.add_volunteer_opportunity.volunteer_opportunity_name.value;
         body.volunteer_opportunity_location_name = document.add_volunteer_opportunity.locationName.value;
@@ -301,71 +206,98 @@ bodySection.addEventListener('click', (event) => {
         .catch(function (error) {
             console.error("Fetch error:", error);
         });
-    }
-
-    if(event.target.classList.contains('delete-button')){
-        let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
-        let deleteVolunteeringOpHeaders = new Headers();
-        deleteVolunteeringOpHeaders.append('content-type', 'application/json');
-        let body = {};
-        body.volunteer_opportunity_id = volunteer_opportunity_id;
-        let appInit = {
-            method: 'DELETE',
-            headers: deleteVolunteeringOpHeaders,
-            body: JSON.stringify(body)
+    });
+    let volunteerOpportunitiesContainer = document.getElementById('volunteer-opportunites-container')
+    volunteerOpportunitiesContainer.addEventListener('click', (event) => { 
+        if(event.target.classList.contains('delete-button')){
+            let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
+            let deleteVolunteeringOpHeaders = new Headers();
+            deleteVolunteeringOpHeaders.append('content-type', 'application/json');
+            let body = {};
+            body.volunteer_opportunity_id = volunteer_opportunity_id;
+            let appInit = {
+                method: 'DELETE',
+                headers: deleteVolunteeringOpHeaders,
+                body: JSON.stringify(body)
+            }
+            let loginURL = "/delete-volunteer-opportunity"; 
+            fetch(loginURL, appInit).then(function(response){
+                return response  
+            })
+            .then(function () {
+                popVolunteerOpportunities();
+            })  
+            .catch(function (error) {
+                console.error("Fetch error:", error);
+            });
         }
-        let loginURL = "/delete-volunteer-opportunity"; 
-        fetch(loginURL, appInit).then(function(response){
-            return response  
-        })
-        .then(function () {
-            popVolunteerOpportunities();
-        })  
-        .catch(function (error) {
-            console.error("Fetch error:", error);
-        });
-    }
-    if(event.target.classList.contains('edit-button')){
-        document.getElementById('add-volunteer-opportunity-form').hidden = false;
-        document.getElementById('add-volunteer-opportunity-button').hidden = true;
-        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
-        let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
-        document.getElementById('edit-volunteer-opportunity').setAttribute('volunteerOpportunityId',volunteer_opportunity_id);
-        let deleteVolunteeringOpHeaders = new Headers();
-        deleteVolunteeringOpHeaders.append('content-type', 'application/json');
-        let body = {};
-        body.volunteer_opportunity_id = volunteer_opportunity_id;
-        let appInit = {
-            method: 'PUT',
-            headers: deleteVolunteeringOpHeaders,
-            body: JSON.stringify(body)
+        if(event.target.classList.contains('edit-button')){
+            document.getElementById('add-volunteer-opportunity-form').hidden = false;
+            document.getElementById('add-volunteer-opportunity-button').hidden = true;
+            document.getElementById('volunteer-opportunities-cards-container').hidden = true;
+            let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
+            document.getElementById('edit-volunteer-opportunity').setAttribute('volunteerOpportunityId',volunteer_opportunity_id);
+            let deleteVolunteeringOpHeaders = new Headers();
+            deleteVolunteeringOpHeaders.append('content-type', 'application/json');
+            let body = {};
+            body.volunteer_opportunity_id = volunteer_opportunity_id;
+            let appInit = {
+                method: 'PUT',
+                headers: deleteVolunteeringOpHeaders,
+                body: JSON.stringify(body)
+            }
+            let loginURL = "/edit-volunteer-opportunity-form"; 
+            fetch(loginURL, appInit).then(function(response){
+                return response.json();   
+            })
+            .then(function (event) {
+                document.getElementsByName('volunteer_opportunity_name')[0].value = event[0].volunteer_opportunity_name;
+                document.getElementsByName('locationName')[0].value = event[0].volunteer_opportunity_location_name;
+                document.getElementsByName('street')[0].value = event[0].street;
+                document.getElementsByName('city')[0].value = event[0].city;
+                document.getElementsByName('state')[0].value = event[0].state;
+                document.getElementsByName('zipcode')[0].value = event[0].zipcode;
+                document.getElementsByName('start_date_time')[0].value = event[0].data_time_timezone_start;
+                document.getElementsByName('end_date_time')[0].value = event[0].date_time_timezone_end;
+                document.getElementsByName('minVolunteers')[0].value = event[0].max_volunteers_needed;
+                document.getElementsByName('maxVolunteers')[0].value = event[0].min_volunteers_needed;
+                document.getElementsByName('requirements')[0].value = event[0].volunteer_opportunity_requirements;
+                document.getElementsByName('description')[0].value = event[0].volunteer_opportunity_description;
+                document.getElementById("edit-volunteer-opportunity").hidden = false;
+                document.getElementById("submit-volunteer-opportunity").hidden = true;
+            })  
+            .catch(function (error) {
+                console.error("Fetch error:", error);
+            })
         }
-        let loginURL = "/edit-volunteer-opportunity-form"; 
-        fetch(loginURL, appInit).then(function(response){
-            return response.json();   
-        })
-        .then(function (event) {
-            document.getElementsByName('volunteer_opportunity_name')[0].value = event[0].volunteer_opportunity_name;
-            document.getElementsByName('locationName')[0].value = event[0].volunteer_opportunity_location_name;
-            document.getElementsByName('street')[0].value = event[0].street;
-            document.getElementsByName('city')[0].value = event[0].city;
-            document.getElementsByName('state')[0].value = event[0].state;
-            document.getElementsByName('zipcode')[0].value = event[0].zipcode;
-            document.getElementsByName('start_date_time')[0].value = event[0].data_time_timezone_start;
-            document.getElementsByName('end_date_time')[0].value = event[0].date_time_timezone_end;
-            document.getElementsByName('minVolunteers')[0].value = event[0].max_volunteers_needed;
-            document.getElementsByName('maxVolunteers')[0].value = event[0].min_volunteers_needed;
-            document.getElementsByName('requirements')[0].value = event[0].volunteer_opportunity_requirements;
-            document.getElementsByName('description')[0].value = event[0].volunteer_opportunity_description;
-            document.getElementById("edit-volunteer-opportunity").hidden = false;
-            document.getElementById("submit-volunteer-opportunity").hidden = true;
-        })  
-        .catch(function (error) {
-            console.error("Fetch error:", error);
-        });
-    }
+        if(event.target.classList.contains('volunteer-button')) {
+            let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
+            let addVolunteeringOpHeaders = new Headers();
+            addVolunteeringOpHeaders.append('content-type', 'application/json');
+            let body = {};
+            body.volunteer_opportunity_id = volunteer_opportunity_id;
+            let appInit = {
+                method: 'PUT',
+                headers: addVolunteeringOpHeaders,
+                body: JSON.stringify(body)
+            }
+            console.log('volunteer button clicked')
+            let loginURL = "/volunteer-opportunity-user-commit"; 
+            fetch(loginURL, appInit).then(function(response){
+                console.log('fetch initiated');
+                return response.json();   
+            })
+            .then(function (event) {
+                console.log(event);
+            })  
+            .catch(function (error) {
+                console.error("Fetch error:", error);
+            });
+        }    
+    });
+    
     let editSubmit = document.getElementById('edit-volunteer-opportunity');
-    if(event.target === editSubmit) {
+    editSubmit.addEventListener('click', (event) => { 
         let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
         let editVolunteeringOpHeaders = new Headers();
         editVolunteeringOpHeaders.append('content-type', 'application/json');
@@ -401,30 +333,193 @@ bodySection.addEventListener('click', (event) => {
         .catch(function (error) {
             console.error("Fetch error:", error);
         });
-    }
-    if(event.target.classList.contains('volunteer-button')) {
-        let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
-        let addVolunteeringOpHeaders = new Headers();
-        addVolunteeringOpHeaders.append('content-type', 'application/json');
-        let body = {};
-        body.volunteer_opportunity_id = volunteer_opportunity_id;
-        let appInit = {
-            method: 'PUT',
-            headers: addVolunteeringOpHeaders,
-            body: JSON.stringify(body)
-        }
-        console.log('volunteer button clicked')
-        let loginURL = "/volunteer-opportunity-user-commit"; 
-        fetch(loginURL, appInit).then(function(response){
-            console.log('fetch initiated');
-            return response.json();   
-        })
-        .then(function (event) {
-            console.log(event);
-        })  
-        .catch(function (error) {
-            console.error("Fetch error:", error);
-        });
-    }
+    });
+    
 
-});
+
+
+
+
+
+
+
+    //upper right links
+function createAccountButton () {
+    document.getElementById('sign-in-container').hidden = true;
+    document.getElementById('create-account-container').hidden = false;
+    document.getElementById('account-creation-success').hidden= true;
+    document.getElementById('add-volunteer-opportunity-form').hidden = true;
+    document.getElementById('add-volunteer-opportunity-button').hidden = true;
+    document.getElementById('add-volunteer-opportunity-successful').hidden= true;
+    document.getElementById('volunteer-opportunities-cards-container').hidden = true;
+}
+
+function signInButton () {
+    document.getElementById('create-account-container').hidden = true;
+    document.getElementById('account-creation-success').hidden= true;
+    document.getElementById('sign-in-container').hidden = false;
+    document.getElementById('add-volunteer-opportunity-form').hidden = true;
+    document.getElementById('add-volunteer-opportunity-button').hidden = true;
+    document.getElementById('add-volunteer-opportunity-successful').hidden= true;
+    document.getElementById('volunteer-opportunities-cards-container').hidden = true;
+}
+
+//sign up process functions
+function createUserInstance () {
+    let body = {};  
+    body.first_name = document.createAccount.firstName.value;
+    body.last_name = document.createAccount.lastName.value;
+    body.email = document.createAccount.email.value;
+    body.username = document.createAccount.username.value;
+    body.password = document.createAccount.password.value;
+    console.log('Body data', body);
+    let createUserHeaders = new Headers();
+    createUserHeaders.append('content-type', 'application/json');
+    let appInit = {
+        method: 'POST',
+        headers: createUserHeaders,
+        body: JSON.stringify(body)
+    }
+    let loginURL = "/users"; 
+    fetch(loginURL, appInit).then(function(response){
+        console.log(response);
+        return response.json()
+    })
+    .then(function (response) {
+        user_id = response[0].user_id; 
+        document.getElementById('create-account-container').hidden = true;
+        document.getElementById('account-creation-success').hidden= false;
+        document.getElementById('login-buttons-container').hidden = true;
+        document.getElementById('logout-buttons-container').hidden= false;
+        document.getElementById('create-volunteer-profile').hidden=false;
+    })
+    .catch(function (error) {
+        console.error("Fetch error:", error);
+    });
+
+    console.log(body);
+}; 
+
+function createVolunteerInstance() {
+    let body = {};  
+    body.first_name = document.createAccount.imageURL.value;
+    body.last_name = document.createAccount.volunteerBio.value;
+    body.email = document.createAccount.publicProfile.value;
+    body.username = document.createAccount.displayName.value;
+    body.password = document.createAccount.password.value;
+    console.log('Body data', body);
+    let createUserHeaders = new Headers();
+    createUserHeaders.append('content-type', 'application/json');
+    let appInit = {
+        method: 'POST',
+        headers: createUserHeaders,
+        body: JSON.stringify(body)
+    }
+    let loginURL = "/users"; 
+    fetch(loginURL, appInit).then(function(response){
+        console.log(response);
+        return response.json()
+    })
+    .then(function (response) {
+        user_id = response[0].user_id; 
+        document.getElementById('create-account-container').hidden = true;
+        document.getElementById('account-creation-success').hidden= false;
+        document.getElementById('login-buttons-container').hidden = true;
+        document.getElementById('logout-buttons-container').hidden= false;
+        document.getElementById('create-volunteer-profile').hidden=false;
+    })
+    .catch(function (error) {
+        console.error("Fetch error:", error);
+    });
+
+    console.log(body);
+}
+
+
+
+
+//main navigation links 
+function volunteerOpportunitiesLink () {
+    document.getElementById('create-account-container').hidden = true;
+    document.getElementById('account-creation-success').hidden = true;
+    document.getElementById('sign-in-container').hidden = true;
+    document.getElementById("event-organizers-container").hidden = true;
+    document.getElementById("event-sponsors-container").hidden = true;
+    document.getElementById("volunteers-container").hidden = true;
+    document.getElementById('add-volunteer-opportunity-form').hidden = true;
+    document.getElementById('add-volunteer-opportunity-successful').hidden = true;
+    popVolunteerOpportunities(); 
+}
+
+function eventOrganziersLink() {
+    document.getElementById('create-account-container').hidden = true;
+    document.getElementById('account-creation-success').hidden= true;
+    document.getElementById('sign-in-container').hidden = true;
+    document.getElementById('volunteer-opportunites-container').hidden = true;
+    document.getElementById("event-organizers-container").hidden = false;
+    document.getElementById("event-sponsors-container").hidden = true;
+    document.getElementById("volunteers-container").hidden = true;
+    document.getElementById('add-volunteer-opportunity-button').hidden = true;
+    document.getElementById('add-volunteer-opportunity-form').hidden = true;
+    document.getElementById('add-volunteer-opportunity-successful').hidden= true;
+    document.getElementById('volunteer-opportunities-cards-container').hidden = true;
+}
+
+function eventSponsorsLink() {
+    document.getElementById('create-account-container').hidden = true;
+        document.getElementById('account-creation-success').hidden= true;
+        document.getElementById('sign-in-container').hidden = true;
+        document.getElementById('volunteer-opportunites-container').hidden = true;
+        document.getElementById("event-organizers-container").hidden = true;
+        document.getElementById("event-sponsors-container").hidden = false;
+        document.getElementById("volunteers-container").hidden = true;
+        document.getElementById('add-volunteer-opportunity-button').hidden = true;
+        document.getElementById('add-volunteer-opportunity-form').hidden = true;
+        document.getElementById('add-volunteer-opportunity-successful').hidden= true;
+        document.getElementById('volunteer-opportunities-cards-container').hidden = true;
+}
+
+function volunteersLink() {
+    document.getElementById('create-account-container').hidden = true;
+    document.getElementById('account-creation-success').hidden= true;
+    document.getElementById('sign-in-container').hidden = true;
+    document.getElementById('volunteer-opportunites-container').hidden = true;
+    document.getElementById("event-organizers-container").hidden = true;
+    document.getElementById("event-sponsors-container").hidden = true;
+    document.getElementById("volunteers-container").hidden = false;
+    document.getElementById('add-volunteer-opportunity-button').hidden = true;
+    document.getElementById('add-volunteer-opportunity-form').hidden = true;
+    document.getElementById('add-volunteer-opportunity-successful').hidden= true;
+    document.getElementById('volunteer-opportunities-cards-container').hidden = true;
+}
+
+//sign in submit fetch 
+function signinSubmitFetch() {
+    let body = {};
+    body.email = document.loginAccount.email.value;
+    body.password = document.loginAccount.password.value;
+    let loginHeaders = new Headers();
+    loginHeaders.append('content-type', 'application/json');
+    let appInit = {
+        method: 'POST',
+        headers: loginHeaders,
+        body: JSON.stringify(body)
+    }
+    let loginURL = "/users/login"; 
+    fetch(loginURL, appInit).then(function(response){
+        return response.json();   
+    })
+    .then((user)=>{
+        user_id = user[0].user_id; 
+        document.getElementById('sign-in-container').hidden = true;
+        document.getElementById('login-buttons-container').hidden = true;
+        document.getElementById('logout-buttons-container').hidden= false;
+        popVolunteerOpportunities(); 
+        
+    })
+    .catch(function (error) {
+        console.error("Fetch error:", error);
+    });
+}
+
+
