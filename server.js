@@ -7,7 +7,10 @@ let bodyParser = require('body-parser');
 app.use(express.static('static'));
 let port = process.env.PORT || 8000;
 const env = process.env.NODE_ENV || 'development';
+console.log('dfasdfa this is where we are begining testing')
+console.log(env);
 const config = require('./knexfile')[env];
+console.log(config);
 const knex = require('knex')(config);
 app.disable('x-powered-by');
 
