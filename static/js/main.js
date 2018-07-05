@@ -379,7 +379,7 @@ function createUserInstance () {
     }
     let loginURL = "/users"; 
     fetch(loginURL, appInit).then(function(response){
-        console.log(response);
+        // console.log(response.json());
         return response.json()
     })
     .then(function (response) {
@@ -398,10 +398,10 @@ function createUserInstance () {
 
 function createVolunteerInstance() {
     let body = {};  
-    body.first_name = document.createAccount.imageURL.value;
-    body.last_name = document.createAccount.volunteerBio.value;
-    body.email = document.createAccount.publicProfile.value;
-    body.username = document.createAccount.displayName.value;
+    body.imageURL = document.createAccount.imageURL.value;
+    body.volunteerBio = document.createAccount.volunteerBio.value;
+    body.publicProfile = document.createAccount.publicProfile.value;
+    body.displayName = document.createAccount.displayName.value;
     body.password = document.createAccount.password.value;
     let createUserHeaders = new Headers();
     createUserHeaders.append('content-type', 'application/json');
