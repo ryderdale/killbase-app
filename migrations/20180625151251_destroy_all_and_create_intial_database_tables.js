@@ -5,9 +5,9 @@ exports.up = function(knex, Promise) {
         table.string('last_name');
         table.string('email'); //this is the users signup email 
         table.string('username');
-        table.string('password'); //this is the users uniquely encripted password
+        table.specificType('hashed_password', 'char(60)').notNullable(); //this is the users uniquely encripted password
     })
-    .then( ()=> {
+    .then( () => {
         return knex.schema.createTable('organizers', (table) => {
             table.integer('user_id').references('user_id').inTable('users'); //this is the equivalent of creating a serial column
             table.increments('organizer_id').unique();  
@@ -16,7 +16,7 @@ exports.up = function(knex, Promise) {
             table.string('organization_phone');
         })
     })
-    .then( ()=> {
+    .then( () => {
         return knex.schema.createTable('secondary_organizers', (table) => {
             table.integer('user_id').references('user_id').inTable('users');
             table.integer('organizer_id').references('organizer_id').inTable('organizers');

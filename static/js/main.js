@@ -5,7 +5,6 @@ let bodySection = document.getElementById('body-section');
 let user_id; 
 
 function popVolunteerOpportunities() {
-    console.log("populating volunteer opps");
     document.getElementById('add-volunteer-opportunity-button').hidden = false;
     document.getElementById('volunteer-opportunites-container').hidden = false;
     document.getElementById('volunteer-opportunities-cards-container').hidden = false;
@@ -18,13 +17,12 @@ function popVolunteerOpportunities() {
             method: 'GET',
             headers: popVolunteerOpportunitiesHeader,
         }
-        let loginURL = "/get-volunteer-opportunities"; 
-        fetch(loginURL, appInit).then(function(response){
+        let URL = "/volunteer-opportunities/"; 
+        fetch(URL, appInit).then(function(response){
             return response.json();
         })
         .then(function (content){
             console.log(content)
-            console.log('made it to scope reseting content container')
             let cardsContainer = document.getElementById('volunteer-opportunities-cards-container');
             cardsContainer.innerHTML = '';
             content.forEach(volOpp => {
@@ -188,9 +186,10 @@ function popVolunteerOpportunities() {
             headers: newVolunteeringOpHeaders,
             body: JSON.stringify(body)
         }
-        let loginURL = "/submit-volunteer-opportunity"; 
+        let loginURL = "/volunteer-opportunities"; 
         fetch(loginURL, appInit).then(function(response){
-            return response   
+            console.log(response);
+            return response.json(); 
         })
         .then(function (added_volunteer_opportunity) {
             // console.log('User response parsed:', JSON.parse(response));
@@ -220,7 +219,7 @@ function popVolunteerOpportunities() {
                 headers: deleteVolunteeringOpHeaders,
                 body: JSON.stringify(body)
             }
-            let loginURL = "/delete-volunteer-opportunity"; 
+            let loginURL = "/volunteer-opportunities/" + volunteer_opportunity_id; 
             fetch(loginURL, appInit).then(function(response){
                 return response  
             })
@@ -237,16 +236,15 @@ function popVolunteerOpportunities() {
             document.getElementById('volunteer-opportunities-cards-container').hidden = true;
             let volunteer_opportunity_id = event.target.attributes.volunteerOpportunityId.value;
             document.getElementById('edit-volunteer-opportunity').setAttribute('volunteerOpportunityId',volunteer_opportunity_id);
-            let deleteVolunteeringOpHeaders = new Headers();
-            deleteVolunteeringOpHeaders.append('content-type', 'application/json');
-            let body = {};
-            body.volunteer_opportunity_id = volunteer_opportunity_id;
+            let editVolunteeringOpHeaders = new Headers();
+            editVolunteeringOpHeaders.append('content-type', 'application/json');
+            // let body = {};
             let appInit = {
-                method: 'PUT',
-                headers: deleteVolunteeringOpHeaders,
-                body: JSON.stringify(body)
+                method: 'GET',
+                headers: editVolunteeringOpHeaders,
+                // body: JSON.stringify(body)
             }
-            let loginURL = "/edit-volunteer-opportunity-form"; 
+            let loginURL = "/volunteer-opportunities/" + volunteer_opportunity_id; 
             fetch(loginURL, appInit).then(function(response){
                 return response.json();   
             })
@@ -281,8 +279,7 @@ function popVolunteerOpportunities() {
                 headers: addVolunteeringOpHeaders,
                 body: JSON.stringify(body)
             }
-            console.log('volunteer button clicked')
-            let loginURL = "/volunteer-opportunity-user-commit"; 
+            let loginURL = "volunteer-opportunities/volunteer-opportunity-volunteer/"+volunteer_opportunity_id; 
             fetch(loginURL, appInit).then(function(response){
                 console.log('fetch initiated');
                 return response.json();   
@@ -320,7 +317,7 @@ function popVolunteerOpportunities() {
             headers: editVolunteeringOpHeaders,
             body: JSON.stringify(body)
         }
-        let loginURL = "/edit-volunteer-opportunity-submit"; 
+        let loginURL = "/volunteer-opportunities/"+volunteer_opportunity_id; 
         fetch(loginURL, appInit).then(function(response){
             return response.json();   
         })
@@ -386,6 +383,7 @@ function createUserInstance () {
         return response.json()
     })
     .then(function (response) {
+        console.log(response);
         user_id = response[0].user_id; 
         document.getElementById('create-account-container').hidden = true;
         document.getElementById('account-creation-success').hidden= false;
@@ -396,8 +394,6 @@ function createUserInstance () {
     .catch(function (error) {
         console.error("Fetch error:", error);
     });
-
-    console.log(body);
 }; 
 
 function createVolunteerInstance() {
@@ -407,7 +403,6 @@ function createVolunteerInstance() {
     body.email = document.createAccount.publicProfile.value;
     body.username = document.createAccount.displayName.value;
     body.password = document.createAccount.password.value;
-    console.log('Body data', body);
     let createUserHeaders = new Headers();
     createUserHeaders.append('content-type', 'application/json');
     let appInit = {
@@ -417,7 +412,6 @@ function createVolunteerInstance() {
     }
     let loginURL = "/users"; 
     fetch(loginURL, appInit).then(function(response){
-        console.log(response);
         return response.json()
     })
     .then(function (response) {
@@ -431,8 +425,6 @@ function createVolunteerInstance() {
     .catch(function (error) {
         console.error("Fetch error:", error);
     });
-
-    console.log(body);
 }
 
 
